@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "checkJs": true,
+    "composite": true,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "exactOptionalPropertyTypes": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true
+  },
+  "exclude": ["dist"]
+}

@@ -1,0 +1,37 @@
+{
+  "name": "libtorrent-node",
+  "description": "",
+  "version": "1.0.0",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node dist/src/index.js",
+    "dev": "tsc-watch --onSuccess 'npm run start'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install && npm run build",
+    "lint": "xo --fix",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/P2Pflix/libtorrent-node.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/P2Pflix/libtorrent-node/issues"
+  },
+  "homepage": "https://github.com/P2Pflix/libtorrent-node#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.3",
+    "@commitlint/config-conventional": "^17.6.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.2",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.0.4",
+    "xo": "^0.54.2"
+  }
+}

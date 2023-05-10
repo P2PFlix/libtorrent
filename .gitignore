@@ -133,3 +133,4 @@ dist
 typings/
 
 .DS_STORE
+bindings/build

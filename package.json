@@ -12,7 +12,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install && npm run build",
     "lint": "xo --fix",
-    "build": "tsc"
+    "build": "tsc",
+    "preinstall": "cmake-js build -d bindings -O bindings/build"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,9 @@
     "tsc-watch": "^6.0.4",
     "typescript": "^5.0.4",
     "xo": "^0.54.2"
+  },
+  "dependencies": {
+    "cmake-js": "^7.2.1",
+    "node-addon-api": "^6.1.0"
   }
 }

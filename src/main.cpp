@@ -1,5 +1,5 @@
 #include <node.h>
-#include "torrent.hpp"
+#include "torrent.cpp"
 
 LibtorrentNodeRandom r;
 

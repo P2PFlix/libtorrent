@@ -131,3 +131,6 @@ dist
 
 # n-api output
 build/
+
+# vscode stuff
+.vscode/

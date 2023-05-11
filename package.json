@@ -31,6 +31,7 @@
     "cmake-js": "^7.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
+    "node-addon-api": "^6.1.0",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.0.4",
     "xo": "^0.54.2"

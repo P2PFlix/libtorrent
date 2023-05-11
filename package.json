@@ -6,15 +6,13 @@
   "typings": "dist/src/index.d.ts",
   "private": true,
   "type": "module",
-  "hasInstallScript": true,
   "scripts": {
     "start": "node dist/src/index.js",
     "dev": "tsc-watch --onSuccess 'npm run start'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install && npm run build",
     "lint": "xo --fix",
-    "build": "tsc",
-    "preinstall": "cmake-js"
+    "build": "cmake-js && tsc"
   },
   "repository": {
     "type": "git",

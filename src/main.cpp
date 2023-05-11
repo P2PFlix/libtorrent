@@ -1,7 +1,7 @@
 #include <node.h>
 #include "torrent.cpp"
 
-LibtorrentNodeRandom r;
+#include <libtorrent/bitfield.hpp>
 
 void Method(const v8::FunctionCallbackInfo<v8::Value> &args)
 {
@@ -12,8 +12,9 @@ void Method(const v8::FunctionCallbackInfo<v8::Value> &args)
 void Shuffle(const v8::FunctionCallbackInfo<v8::Value> &args)
 {
 	v8::Isolate *isolate = args.GetIsolate();
-	args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, "").ToLocalChecked());
-	r.shuffle();
+	libtorrent::bitfield test1(100100, false);
+	std::string s = "no. of 1s: |" + std::to_string(test1.count()) + "|\n" + "no. of 1s: |" + std::to_string(test1.size() - test1.count()) + "|";
+	args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, s.c_str()).ToLocalChecked());
 }
 
 void Initialize(v8::Local<v8::Object> exports)

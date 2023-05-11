@@ -2,9 +2,11 @@ import {createRequire} from 'node:module';
 
 type LibtorrentNode = {
 	hello: () => 'world';
+	shuffle: () => void;
 };
 
 const require = createRequire(import.meta.url);
-const hello = require('../build/Release/libtorrentNode.node') as LibtorrentNode;
+const hello
+  = require('../../build/Release/libtorrentNode.node') as LibtorrentNode;
 
 export default hello;

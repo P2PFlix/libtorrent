@@ -6,6 +6,7 @@
   "typings": "dist/src/index.d.ts",
   "private": true,
   "type": "module",
+  "hasInstallScript": true,
   "scripts": {
     "start": "node dist/src/index.js",
     "dev": "tsc-watch --onSuccess 'npm run start'",
@@ -13,7 +14,7 @@
     "prepare": "husky install && npm run build",
     "lint": "xo --fix",
     "build": "tsc",
-    "preinstall": "cmake-js build -d bindings -O bindings/build"
+    "preinstall": "cmake-js"
   },
   "repository": {
     "type": "git",
@@ -29,14 +30,11 @@
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
+    "cmake-js": "^7.2.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "tsc-watch": "^6.0.4",
     "typescript": "^5.0.4",
     "xo": "^0.54.2"
-  },
-  "dependencies": {
-    "cmake-js": "^7.2.1",
-    "node-addon-api": "^6.1.0"
   }
 }

@@ -35,9 +35,6 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
-
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -129,8 +126,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# TypeScript v1 declaration file
-typings/
+# Macos stuff
+.DS_Store
 
-.DS_STORE
-bindings/build
+# n-api output
+build/

@@ -1,26 +1,13 @@
-#include <node.h>
-#include "torrent.cpp"
+#include "main.hpp"
 
-#include <libtorrent/bitfield.hpp>
-
-void Method(const v8::FunctionCallbackInfo<v8::Value> &args)
-{
-	v8::Isolate *isolate = args.GetIsolate();
-	args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, "world").ToLocalChecked());
+Napi::String Version(const Napi::CallbackInfo& info) {
+  Napi::Env env = info.Env();
+  return Napi::String::New(env, lt::version());
 }
 
-void Shuffle(const v8::FunctionCallbackInfo<v8::Value> &args)
-{
-	v8::Isolate *isolate = args.GetIsolate();
-	libtorrent::bitfield test1(100100, false);
-	std::string s = "no. of 1s: |" + std::to_string(test1.count()) + "|\n" + "no. of 1s: |" + std::to_string(test1.size() - test1.count()) + "|";
-	args.GetReturnValue().Set(v8::String::NewFromUtf8(isolate, s.c_str()).ToLocalChecked());
+Napi::Object Init(Napi::Env env, Napi::Object exports) {
+  exports.Set(Napi::String::New(env, "version"), Napi::Function::New(env, Version));
+  return exports;
 }
 
-void Initialize(v8::Local<v8::Object> exports)
-{
-	NODE_SET_METHOD(exports, "hello", Method);
-	NODE_SET_METHOD(exports, "shuffle", Shuffle);
-}
-
-NODE_MODULE(NODE_GYP_MODULE_NAME, Initialize)
+NODE_API_MODULE(LIBTORRENT_NODE, Init)

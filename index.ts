@@ -1,8 +1,7 @@
 import {createRequire} from 'node:module';
 
 type LibtorrentNode = {
-	hello: () => 'world';
-	shuffle: () => never;
+	version: () => '2.1.0.0';
 };
 
 const require = createRequire(import.meta.url);

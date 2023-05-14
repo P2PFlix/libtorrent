@@ -3,6 +3,7 @@
 
 #include "bindings.hpp"
 #include "version.hpp"
+#include "errors.hpp"
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports);
 

@@ -78,14 +78,32 @@ LibtorrentNode::Torrent::Torrent(const Napi::CallbackInfo &info) : Napi::ObjectW
 
 Napi::Value LibtorrentNode::Torrent::Pause(const Napi::CallbackInfo &info)
 {
-  this->torrent.pause();
+  Napi::Env env = info.Env();
+
+  try
+  {
+    this->torrent.pause();
+  }
+  catch (const std::exception &e)
+  {
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::ERRORS[3], e.what()})).ThrowAsJavaScriptException();
+  }
 
   return Napi::Boolean::New(info.Env(), true);
 }
 
 Napi::Value LibtorrentNode::Torrent::Resume(const Napi::CallbackInfo &info)
 {
-  this->torrent.resume();
+  Napi::Env env = info.Env();
+
+  try
+  {
+    this->torrent.resume();
+  }
+  catch (const std::exception &e)
+  {
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::ERRORS[4], e.what()})).ThrowAsJavaScriptException();
+  }
 
   return Napi::Boolean::New(info.Env(), true);
 }
@@ -94,14 +112,27 @@ Napi::Value LibtorrentNode::Torrent::SetLimit(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
   size_t argc = info.Length();
+
+  if (info.Length() < 2 || !info[0].IsNumber() || !info[1].IsString())
+  {
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::INCORRECT_AGUMENTS_SUPPLIED, LibtorrentNode::ERRORS[2]})).ThrowAsJavaScriptException();
+  }
+
   int64_t limit = info[0].As<Napi::Number>().Int64Value();
   std::string type = info[1].As<Napi::String>().Utf8Value();
   bool is_upload = type == "upload";
 
-  if (is_upload)
-    this->torrent.set_upload_limit(limit);
-  else
-    this->torrent.set_download_limit(limit);
+  try
+  {
+    if (is_upload)
+      this->torrent.set_upload_limit(limit);
+    else
+      this->torrent.set_download_limit(limit);
+  }
+  catch (const std::exception &e)
+  {
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::ERRORS[2], e.what()})).ThrowAsJavaScriptException();
+  }
 
   return Napi::Boolean::New(env, true);
 }
@@ -135,7 +166,7 @@ Napi::Value LibtorrentNode::Torrent::GetFiles(const Napi::CallbackInfo &info)
   }
   catch (const std::exception &e)
   {
-    std::cout << e.what() << "\n";
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::ERRORS[5], e.what()})).ThrowAsJavaScriptException();
   }
   retVal.Set("data", result);
 
@@ -233,7 +264,7 @@ Napi::Value LibtorrentNode::Client::AddTorrent(const Napi::CallbackInfo &info)
 
   if (info.Length() < 2 || !info[0].IsString() || !info[1].IsString())
   {
-    Napi::TypeError::New(env, "Incorrent arguments supplied. Expected usage is 'addTorrent(file_path:string, magnet_uri:string)'").ThrowAsJavaScriptException();
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::INCORRECT_AGUMENTS_SUPPLIED, LibtorrentNode::ERRORS[0]})).ThrowAsJavaScriptException();
   }
 
   std::string save_path = info[0].As<Napi::String>().Utf8Value();
@@ -258,6 +289,12 @@ Napi::Value LibtorrentNode::Client::RemoveTorrent(const Napi::CallbackInfo &info
 {
   Napi::Env env = info.Env();
   size_t argc = info.Length();
+
+  if (info.Length() != 1 || !info[0].IsString())
+  {
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::INCORRECT_AGUMENTS_SUPPLIED, LibtorrentNode::ERRORS[6]})).ThrowAsJavaScriptException();
+  }
+
   std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
   lt::torrent_handle torrent = findTorrent(&this->session, to_find_id);
 
@@ -294,6 +331,11 @@ Napi::Value LibtorrentNode::Client::GetTorrent(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
   size_t argc = info.Length();
+
+  if (info.Length() != 1 && !info[0].IsString())
+  {
+    Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::INCORRECT_AGUMENTS_SUPPLIED, LibtorrentNode::ERRORS[1]})).ThrowAsJavaScriptException();
+  }
   std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
   lt::torrent_handle torrent = findTorrent(&this->session, to_find_id);
 

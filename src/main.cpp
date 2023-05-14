@@ -1,5 +1,25 @@
+#include <iostream>
 #include "main.hpp"
 
+Napi::String LibtorrentNode::getLibTorrentVersion(const Napi::CallbackInfo &info)
+{
+  Napi::Env env = info.Env();
+  return Napi::String::New(env, lt::version());
+}
+
+Napi::Object LibtorrentNode::Init(Napi::Env env, Napi::Object &exports)
+{
+  exports.Set("getLibTorrentVersion", Napi::Function::New(env, LibtorrentNode::getLibTorrentVersion));
+  return exports;
+}
+
+Napi::Object InitAll(Napi::Env env, Napi::Object exports)
+{
+  LibtorrentNode::Init(env, exports);
+  LibtorrentNode::Client::Init(env, exports);
+  LibtorrentNode::Torrent::Init(env, exports);
+  return exports;
+}
 
 Napi::String LibtorrentNode::Version(const Napi::CallbackInfo &info)
 {
@@ -28,8 +48,7 @@ lt::torrent_handle LibtorrentNode::findTorrent(lt::session *session, std::uint32
 Napi::Object LibtorrentNode::Torrent::NewInstance(Napi::Env env, lt::torrent_handle torrent)
 {
   Napi::EscapableHandleScope scope(env);
-
-  if (constructor == nullptr)
+  if (Torrent::constructor == nullptr)
   {
     Napi::Function func = DefineClass(env,
                                       "Torrent",
@@ -38,12 +57,12 @@ Napi::Object LibtorrentNode::Torrent::NewInstance(Napi::Env env, lt::torrent_han
                                        InstanceMethod("pause", &Torrent::Pause),
                                        InstanceMethod("resume", &Torrent::Resume)});
 
-    constructor = Napi::Persistent(func);
+    Torrent::constructor = Napi::Persistent(func);
 
-    constructor.SuppressDestruct();
+    Torrent::constructor.SuppressDestruct();
   }
   _torrent = torrent;
-  Napi::Object obj = constructor.New({});
+  Napi::Object obj = Torrent::constructor.New({});
 
   return scope.Escape(napi_value(obj)).ToObject();
 }
@@ -87,31 +106,40 @@ Napi::Value LibtorrentNode::Torrent::SetLimit(const Napi::CallbackInfo &info)
   return Napi::Boolean::New(env, true);
 }
 
-Napi::Array LibtorrentNode::Torrent::GetFiles(const Napi::CallbackInfo &info)
+Napi::Value LibtorrentNode::Torrent::GetFiles(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
+  Napi::Object retVal = Napi::Object::New(env);
   Napi::Array result = Napi::Array::New(env);
-  std::vector<lt::open_file_state> files = this->torrent.file_status();
-  lt::torrent_status status = this->torrent.status();
-  auto torrent_info = status.torrent_file.lock();
-
-  if (!torrent_info->is_valid())
-    return result;
-
-  unsigned int num_files = torrent_info->num_files();
-
-  for (lt::file_index_t i(0); static_cast<int>(i) != num_files; ++i)
+  try
   {
-    Napi::Object entry = Napi::Object::New(env);
-    lt::file_storage storage = torrent_info->files();
+    std::vector<lt::open_file_state> files = this->torrent.file_status();
+    lt::torrent_status status = this->torrent.status();
+    auto torrent_info = status.torrent_file.lock();
 
-    entry.Set("size", Napi::Number::New(env, storage.file_size(i)));
-    entry.Set("filename", Napi::String::New(env, std::string(storage.file_name(i)).c_str()));
-    entry.Set("path", Napi::String::New(env, storage.file_path(i).c_str()));
-    result.Set(static_cast<int>(i), entry);
+    if (!torrent_info->is_valid())
+      return result;
+
+    unsigned int num_files = torrent_info->num_files();
+
+    for (lt::file_index_t i(0); static_cast<int>(i) != num_files; ++i)
+    {
+      Napi::Object entry = Napi::Object::New(env);
+      lt::file_storage storage = torrent_info->files();
+
+      entry.Set("size", Napi::Number::New(env, storage.file_size(i)));
+      entry.Set("filename", Napi::String::New(env, std::string(storage.file_name(i)).c_str()));
+      entry.Set("path", Napi::String::New(env, storage.file_path(i).c_str()));
+      result.Set(static_cast<int>(i), entry);
+    }
   }
+  catch (const std::exception &e)
+  {
+    std::cout << e.what() << "\n";
+  }
+  retVal.Set("data", result);
 
-  return result;
+  return retVal;
 }
 
 Napi::Value LibtorrentNode::Torrent::Info(const Napi::CallbackInfo &info)
@@ -156,6 +184,19 @@ Napi::Value LibtorrentNode::Torrent::Info(const Napi::CallbackInfo &info)
   return result;
 }
 
+Napi::Object LibtorrentNode::Torrent::Init(Napi::Env env, Napi::Object exports)
+{
+  Napi::HandleScope scope(env);
+  Napi::Function func = DefineClass(env, "Torrent", {InstanceMethod("pause", &Torrent::Pause), InstanceMethod("resume", &Torrent::Resume), InstanceMethod("setLimit", &Torrent::SetLimit), InstanceMethod("getFiles", &Torrent::GetFiles), InstanceMethod("info", &Torrent::Info)});
+
+  Torrent::constructor = Napi::Persistent(func);
+  Torrent::constructor.SuppressDestruct();
+
+  exports.Set(Napi::String::New(env, "Torrent"), func);
+
+  return exports;
+}
+
 Napi::Object LibtorrentNode::Client::Init(Napi::Env env, Napi::Object exports)
 {
   Napi::HandleScope scope(env);
@@ -170,9 +211,9 @@ Napi::Object LibtorrentNode::Client::Init(Napi::Env env, Napi::Object exports)
                                      InstanceMethod("hasTorrents", &Client::HasTorrents),
                                      InstanceMethod("isDestroyed", &Client::IsDestroyed)});
 
-  constructor = Napi::Persistent(func);
+  Client::constructor = Napi::Persistent(func);
 
-  constructor.SuppressDestruct();
+  Client::constructor.SuppressDestruct();
   exports.Set(Napi::String::New(env, "Client"), func);
 
   return exports;
@@ -189,6 +230,12 @@ Napi::Value LibtorrentNode::Client::AddTorrent(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
   size_t argc = info.Length();
+
+  if (info.Length() < 2 || !info[0].IsString() || !info[1].IsString())
+  {
+    Napi::TypeError::New(env, "Incorrent arguments supplied. Expected usage is 'addTorrent(file_path:string, magnet_uri:string)'").ThrowAsJavaScriptException();
+  }
+
   std::string save_path = info[0].As<Napi::String>().Utf8Value();
   std::string torrent = info[1].As<Napi::String>().Utf8Value();
 
@@ -297,9 +344,4 @@ Napi::Value LibtorrentNode::Client::IsDestroyed(const Napi::CallbackInfo &info)
   return Napi::Boolean::New(env, !this->session.is_valid());
 }
 
-Napi::Object LibtorrentNode::Init(Napi::Env env, Napi::Object exports)
-{
-  exports.Set(Napi::String::New(env, "version"), Napi::Function::New(env, Version));
-
-  return Client::Init(env, exports);
-}
+NODE_API_MODULE(LIBTORRENT_NODE, InitAll)

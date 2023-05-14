@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install && npm run build",
     "lint": "xo --fix",
-    "build": "cmake-js && tsc"
+    "build": "cmake-js --parallel $(node -p \"require('node:os').cpus().length\") && tsc"
   },
   "repository": {
     "type": "git",

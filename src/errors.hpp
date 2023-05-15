@@ -16,5 +16,12 @@ namespace LibtorrentNode
         "Expected usage is 'removeTorrent(id: number)'",
     };
 
+    /**
+     * @brief A helper function to construct error messages
+     * Eg. buildErrorMessage({ INCORRECT_ARGUMENTS_SUPPLIED, ERRORS[1], exception.what() })
+     *
+     * @param parts Initializer list for std::vector< std::string > &
+     * @return const std::string
+     */
     const std::string buildErrorMessage(const std::vector<std::string> &parts);
 } // namespace LibtorentNode

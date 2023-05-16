@@ -20,7 +20,13 @@ namespace LibtorrentNode
         "Expected usage is 'removeTorrent(id: number)'",
     };
 
-    // TODO(alias-rahil): document this function
+    /**
+     * @brief A helper function to throw n-api error messages
+     * Eg. throwAsJavaScriptException(env, { INCORRECT_ARGUMENTS_SUPPLIED, ERRORS[1], exception.what() })
+     *
+     * @param env
+     * @param parts Initializer list for std::vector< std::string > &
+     */
     const void throwAsJavaScriptException(Napi::Env env, const std::vector<std::string> &parts);
 } // namespace LibtorentNode
 

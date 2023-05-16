@@ -1,11 +1,15 @@
-#pragma once
+#ifndef ERRORS_H
+#define ERRORS_H
 
 #include <vector>
 #include <string>
+#include <boost/algorithm/string/join.hpp>
+#include <napi.h>
 
 namespace LibtorrentNode
 {
-    const std::string INCORRECT_AGUMENTS_SUPPLIED = "Incorrect arguments supplied. ";
+    const std::string INCORRECT_AGUMENTS_SUPPLIED = "Incorrect arguments supplied";
+
     const std::vector<std::string> ERRORS = {
         "Expected usage is 'addTorrent(file_path: string, magnet_uri: string)'",
         "Expected usage is 'getTorrent(id: nunmber)'",
@@ -16,12 +20,8 @@ namespace LibtorrentNode
         "Expected usage is 'removeTorrent(id: number)'",
     };
 
-    /**
-     * @brief A helper function to construct error messages
-     * Eg. buildErrorMessage({ INCORRECT_ARGUMENTS_SUPPLIED, ERRORS[1], exception.what() })
-     *
-     * @param parts Initializer list for std::vector< std::string > &
-     * @return const std::string
-     */
-    const std::string buildErrorMessage(const std::vector<std::string> &parts);
+    // TODO(alias-rahil): document this function
+    const void throwAsJavaScriptException(Napi::Env env, const std::vector<std::string> &parts);
 } // namespace LibtorentNode
+
+#endif

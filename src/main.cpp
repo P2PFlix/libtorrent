@@ -140,7 +140,6 @@ Napi::Value LibtorrentNode::Torrent::SetLimit(const Napi::CallbackInfo &info)
 Napi::Value LibtorrentNode::Torrent::GetFiles(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
-  Napi::Object retVal = Napi::Object::New(env);
   Napi::Array result = Napi::Array::New(env);
   try
   {
@@ -168,9 +167,8 @@ Napi::Value LibtorrentNode::Torrent::GetFiles(const Napi::CallbackInfo &info)
   {
     Napi::TypeError::New(env, LibtorrentNode::buildErrorMessage({LibtorrentNode::ERRORS[5], e.what()})).ThrowAsJavaScriptException();
   }
-  retVal.Set("data", result);
 
-  return retVal;
+  return result;
 }
 
 Napi::Value LibtorrentNode::Torrent::Info(const Napi::CallbackInfo &info)

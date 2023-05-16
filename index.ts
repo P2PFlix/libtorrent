@@ -1,13 +1,15 @@
 import {createRequire} from 'node:module';
+import path from 'node:path';
 
 type GetClientInfoReturnModel = {
-	readonly downlodRate: number;
-	readonly uploadRte: number;
-	readonly progress: number;
-	readonly peers: number;
-	readonly ratio: number;
-	readonly nb_torrents: number;
+	downlodRate: number;
+	uploadRte: number;
+	progress: number;
+	peers: number;
+	ratio: number;
+	nb_torrents: number;
 };
+
 type TorrentFileModel = {
 	size: number;
 	filename: string;
@@ -36,42 +38,22 @@ type TorrentInfoModel = {
 
 type TorrentType = 'upload' | 'download';
 
-type TorrentHandleType = any;
-
-type TorrentModel = {
-	pause: () => boolean;
-	resume: () => boolean;
-	setLimit: (limit: number, type: TorrentType) => boolean;
-	getFiles: () => {data: TorrentFileModel[]};
-	info: () => TorrentInfoModel;
-};
-
-type ClientModel = {
-	addTorrent: (savePath: string, torrent: string) => number;
-	hasTorrents: () => boolean;
-	isDestroyed: () => boolean;
-	removeTorrent: () => undefined;
-	getTorrents: () => TorrentHandleType[];
-	getTorrent: (torrentId: number) => TorrentModel;
-	getClientInfo: () => GetClientInfoReturnModel;
-};
-
-declare class Torrent implements TorrentModel {
-	pause: () => boolean;
-	resume: () => boolean;
-	setLimit: (limit: number, type: TorrentType) => boolean;
-	getFiles: () => {data: TorrentFileModel[]};
-	info: () => TorrentInfoModel;
+declare class Torrent {
+	pause(): boolean;
+	resume(): boolean;
+	setLimit(limit: number, type: TorrentType): boolean;
+	getFiles(): TorrentFileModel[];
+	info(): TorrentInfoModel;
 }
 
-declare class Client implements ClientModel {
-	getClientInfo: () => GetClientInfoReturnModel;
+declare class Client {
+	getClientInfo(): GetClientInfoReturnModel;
 	addTorrent(savePath: string, torrent: string): number;
 	hasTorrents(): boolean;
 	isDestroyed(): boolean;
 	removeTorrent(): undefined;
-	getTorrent(torrentId: number): TorrentModel;
-	getTorrents(): TorrentHandleType[];
+	getTorrent(torrentId: number): Torrent;
+	getTorrents(): Torrent[];
 }
 
 type LibtorrentNode = {
@@ -79,8 +61,8 @@ type LibtorrentNode = {
 	Client: typeof Client;
 };
 
+const id = path.join('..', 'build', 'Release', 'libtorrentNode.node');
 const require = createRequire(import.meta.url);
-const libtorrentNode
-  = require('../build/Release/libtorrentNode.node') as LibtorrentNode;
+const libtorrentNode = require(id) as LibtorrentNode;
 
 export default libtorrentNode;

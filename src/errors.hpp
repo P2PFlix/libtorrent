@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include <boost/algorithm/string/join.hpp>
 #include <napi.h>
 
 namespace LibtorrentNode

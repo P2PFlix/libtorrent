@@ -1,5 +1,5 @@
 const config = {
-	'*': () => ['npm run build', 'npm run lint', 'npm run test'],
+	'*': () => ['npm run test', 'npm run lint'],
 };
 
 export default config;

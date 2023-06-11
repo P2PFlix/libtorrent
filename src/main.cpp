@@ -238,6 +238,7 @@ Napi::Object LibtorrentNode::Client::Init(Napi::Env env, Napi::Object exports)
                                      InstanceMethod("removeTorrent", &Client::RemoveTorrent),
                                      InstanceMethod("getClientInfo", &Client::GetClientInfo),
                                      InstanceMethod("hasTorrents", &Client::HasTorrents),
+                                     InstanceMethod("callEmit", &Client::CallEmit),
                                      InstanceMethod("isDestroyed", &Client::IsDestroyed)});
 
   Client::constructor = Napi::Persistent(func);
@@ -382,6 +383,97 @@ Napi::Value LibtorrentNode::Client::IsDestroyed(const Napi::CallbackInfo &info)
   Napi::Env env = info.Env();
 
   return Napi::Boolean::New(env, !this->session.is_valid());
+}
+
+std::thread nativeThread;
+Napi::ThreadSafeFunction tsfn;
+
+void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
+{
+  bool allBreak = false;
+  Napi::Env env = info.Env();
+
+  if (!info[0].IsFunction())
+  {
+    throw Napi::TypeError::New(env, "Expected first arg to be function");
+  }
+
+  // Create a ThreadSafeFunction
+  tsfn = Napi::ThreadSafeFunction::New(
+      env,
+      info[0].As<Napi::Function>(), // JavaScript function called asynchronously
+      "Resource Name",              // Name
+      0,                            // Unlimited queue
+      1,                            // Only one thread will use this initially
+      [](Napi::Env) {               // Finalizer used to clean threads up
+        nativeThread.join();
+      });
+
+  // Create a native thread
+  nativeThread = std::thread([&]
+                             {
+    auto callback = []( Napi::Env env, Napi::Function jsCallback, const std::string& value ) {
+      // Transform native data into JS data, passing it to the provided
+      // `jsCallback` -- the TSFN's JavaScript function.
+      jsCallback.Call( {Napi::String::New( env, value )} );
+
+      // We're finished with the data.
+      // delete value;
+    };
+
+    napi_status status;
+
+    bool allBreak = false;
+    while (true)
+    {
+      if (allBreak)
+        break;
+
+      std::vector<lt::alert *> alerts;
+      session.pop_alerts(&alerts);
+
+      lt::state_update_alert *st;
+      for (lt::alert *a : alerts)
+      {
+        if (allBreak)
+          break;
+          
+        status = tsfn.BlockingCall(".", callback);
+        if (status != napi_ok)
+        {
+          std::cerr << "ERROR1" << std::endl;
+
+          break;
+        }
+        switch (a->type())
+        {
+        case lt::torrent_finished_alert::alert_type:
+          status = tsfn.BlockingCall("DOWNLOAD_FINISHED", callback);
+          if (status != napi_ok)
+          {
+            std::cerr<<"ERROR2"<<std::endl;
+            // Handle error
+            break;
+          }
+          allBreak = true;
+          break;
+
+        case lt::torrent_error_alert::alert_type:
+          status = tsfn.BlockingCall("DOWNLOAD_ERROR", callback);
+          if (status != napi_ok)
+          {
+            std::cerr << "ERROR3" << std::endl;
+            // Handle error
+            break;
+          }
+          allBreak = true;
+          break;
+        }
+      }
+      // std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    // Release the thread-safe function
+    tsfn.Release(); });
 }
 
 NODE_API_MODULE(LIBTORRENT_NODE, InitAll)

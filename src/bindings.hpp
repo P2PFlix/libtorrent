@@ -1,9 +1,20 @@
 #ifndef BINDINGS_H
 #define BINDINGS_H
 
+#include <vector>
+
+// #include <node_api.h>
+#include <uv.h>
+
 #include <napi.h>
+#include <libtorrent/alert_types.hpp>
+#include <libtorrent/alert.hpp>
+
 #include <libtorrent/magnet_uri.hpp>
 #include <libtorrent/session.hpp>
+#include <thread>
+#include <chrono>
+#include <napi.h>
 
 namespace LibtorrentNode
 {
@@ -141,6 +152,9 @@ namespace LibtorrentNode
          * @return Napi::Value
          */
         Napi::Value IsDestroyed(const Napi::CallbackInfo &info);
+
+        void CallEmit(const Napi::CallbackInfo& info);
+    
     };
     // inline extern
     // inline extern

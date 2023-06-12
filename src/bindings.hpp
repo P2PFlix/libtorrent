@@ -15,12 +15,17 @@
 #include <thread>
 #include <chrono>
 #include <napi.h>
+#include <memory>
 
 namespace LibtorrentNode
 {
     lt::torrent_handle _torrent;
     Napi::String Version(const Napi::CallbackInfo &info);
-    lt::torrent_handle findTorrent(lt::session *session, std::uint32_t to_find_id);
+    lt::torrent_handle findTorrent(std::shared_ptr<lt::session> &session, std::uint32_t to_find_id);
+    lt::settings_pack session_params;
+
+    std::thread nativeThread;
+    Napi::ThreadSafeFunction tsfn;
 
     class Torrent : public Napi::ObjectWrap<Torrent>
     {
@@ -49,7 +54,8 @@ namespace LibtorrentNode
 
     private:
         inline static Napi::FunctionReference constructor;
-        lt::session session;
+        // lt::session session;
+        std::shared_ptr<lt::session> session;
         lt::session_proxy session_proxy;
 
         /**

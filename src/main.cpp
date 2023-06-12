@@ -15,6 +15,7 @@ Napi::Object LibtorrentNode::Init(Napi::Env env, Napi::Object &exports)
 
 Napi::Object InitAll(Napi::Env env, Napi::Object exports)
 {
+  LibtorrentNode::session_params.set_int(lt::settings_pack::alert_mask, lt::alert_category::all);
   LibtorrentNode::Init(env, exports);
   LibtorrentNode::Client::Init(env, exports);
   LibtorrentNode::Torrent::Init(env, exports);
@@ -28,7 +29,7 @@ Napi::String LibtorrentNode::Version(const Napi::CallbackInfo &info)
   return Napi::String::New(env, lt::version());
 }
 
-lt::torrent_handle LibtorrentNode::findTorrent(lt::session *session, std::uint32_t to_find_id)
+lt::torrent_handle LibtorrentNode::findTorrent(std::shared_ptr<lt::session> &session, std::uint32_t to_find_id)
 {
   std::vector<lt::torrent_handle> torrents = session->get_torrents();
 
@@ -252,6 +253,7 @@ Napi::Object LibtorrentNode::Client::Init(Napi::Env env, Napi::Object exports)
 LibtorrentNode::Client::Client(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Client>(info)
 {
   Napi::Env env = info.Env();
+  this->session = std::move(std::shared_ptr<lt::session>(new lt::session(session_params)));
 
   Napi::HandleScope scope(env);
 }
@@ -279,7 +281,7 @@ Napi::Value LibtorrentNode::Client::AddTorrent(const Napi::CallbackInfo &info)
   else
     params.ti = std::make_shared<lt::torrent_info>(torrent);
 
-  lt::torrent_handle added_torrent = this->session.add_torrent(params);
+  lt::torrent_handle added_torrent = this->session->add_torrent(params);
 
   return Napi::Number::New(env, added_torrent.id());
 }
@@ -295,11 +297,11 @@ Napi::Value LibtorrentNode::Client::RemoveTorrent(const Napi::CallbackInfo &info
   }
 
   std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
-  lt::torrent_handle torrent = findTorrent(&this->session, to_find_id);
+  lt::torrent_handle torrent = findTorrent(this->session, to_find_id);
 
   if (torrent.is_valid())
   {
-    this->session.remove_torrent(torrent);
+    this->session->remove_torrent(torrent);
 
     return Napi::Boolean::New(env, true);
   }
@@ -312,7 +314,7 @@ Napi::Value LibtorrentNode::Client::GetTorrents(const Napi::CallbackInfo &info)
   Napi::Env env = info.Env();
   Napi::Array result = Napi::Array::New(env);
   unsigned int index = 0;
-  std::vector<lt::torrent_handle> torrents = this->session.get_torrents();
+  std::vector<lt::torrent_handle> torrents = this->session->get_torrents();
 
   for (auto const &torrent_handle : torrents)
   {
@@ -336,7 +338,7 @@ Napi::Value LibtorrentNode::Client::GetTorrent(const Napi::CallbackInfo &info)
     LibtorrentNode::throwAsJavaScriptException(env, {LibtorrentNode::INCORRECT_AGUMENTS_SUPPLIED, LibtorrentNode::ERRORS[1]});
   }
   std::uint32_t to_find_id = info[0].As<Napi::Number>().Int32Value();
-  lt::torrent_handle torrent = findTorrent(&this->session, to_find_id);
+  lt::torrent_handle torrent = findTorrent(this->session, to_find_id);
 
   return Torrent::NewInstance(env, torrent);
 }
@@ -345,7 +347,7 @@ Napi::Value LibtorrentNode::Client::GetClientInfo(const Napi::CallbackInfo &info
 {
   Napi::Env env = info.Env();
   Napi::Object result = Napi::Object::New(env);
-  std::vector<lt::torrent_handle> torrents = this->session.get_torrents();
+  std::vector<lt::torrent_handle> torrents = this->session->get_torrents();
   double download_rate = 0.0;
   double upload_rate = 0.0;
   float progress = 0;
@@ -375,22 +377,18 @@ Napi::Value LibtorrentNode::Client::HasTorrents(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
 
-  return Napi::Boolean::New(env, this->session.get_torrents().size() != 0);
+  return Napi::Boolean::New(env, this->session->get_torrents().size() != 0);
 }
 
 Napi::Value LibtorrentNode::Client::IsDestroyed(const Napi::CallbackInfo &info)
 {
   Napi::Env env = info.Env();
 
-  return Napi::Boolean::New(env, !this->session.is_valid());
+  return Napi::Boolean::New(env, !this->session->is_valid());
 }
-
-std::thread nativeThread;
-Napi::ThreadSafeFunction tsfn;
 
 void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
 {
-  bool allBreak = false;
   Napi::Env env = info.Env();
 
   if (!info[0].IsFunction())
@@ -399,26 +397,21 @@ void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
   }
 
   // Create a ThreadSafeFunction
-  tsfn = Napi::ThreadSafeFunction::New(
+  LibtorrentNode::tsfn = Napi::ThreadSafeFunction::New(
       env,
       info[0].As<Napi::Function>(), // JavaScript function called asynchronously
       "Resource Name",              // Name
       0,                            // Unlimited queue
       1,                            // Only one thread will use this initially
       [](Napi::Env) {               // Finalizer used to clean threads up
-        nativeThread.join();
+        LibtorrentNode::nativeThread.join();
       });
 
   // Create a native thread
-  nativeThread = std::thread([&]
-                             {
+  LibtorrentNode::nativeThread = std::thread([&]
+                                           {
     auto callback = []( Napi::Env env, Napi::Function jsCallback, const std::string& value ) {
-      // Transform native data into JS data, passing it to the provided
-      // `jsCallback` -- the TSFN's JavaScript function.
       jsCallback.Call( {Napi::String::New( env, value )} );
-
-      // We're finished with the data.
-      // delete value;
     };
 
     napi_status status;
@@ -430,7 +423,7 @@ void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
         break;
 
       std::vector<lt::alert *> alerts;
-      session.pop_alerts(&alerts);
+      session->pop_alerts(&alerts);
 
       lt::state_update_alert *st;
       for (lt::alert *a : alerts)
@@ -438,17 +431,10 @@ void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
         if (allBreak)
           break;
           
-        status = tsfn.BlockingCall(".", callback);
-        if (status != napi_ok)
-        {
-          std::cerr << "ERROR1" << std::endl;
-
-          break;
-        }
         switch (a->type())
         {
         case lt::torrent_finished_alert::alert_type:
-          status = tsfn.BlockingCall("DOWNLOAD_FINISHED", callback);
+          status = tsfn.NonBlockingCall("DOWNLOAD_FINISHED", callback);
           if (status != napi_ok)
           {
             std::cerr<<"ERROR2"<<std::endl;
@@ -459,7 +445,7 @@ void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
           break;
 
         case lt::torrent_error_alert::alert_type:
-          status = tsfn.BlockingCall("DOWNLOAD_ERROR", callback);
+          status = tsfn.NonBlockingCall("DOWNLOAD_ERROR", callback);
           if (status != napi_ok)
           {
             std::cerr << "ERROR3" << std::endl;
@@ -470,7 +456,7 @@ void LibtorrentNode::Client::CallEmit(const Napi::CallbackInfo &info)
           break;
         }
       }
-      // std::this_thread::sleep_for(std::chrono::milliseconds(500));
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
     // Release the thread-safe function
     tsfn.Release(); });

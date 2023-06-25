@@ -1,5 +1,5 @@
 {
-  "name": "libtorrent-node",
+  "name": "libtorrent",
   "description": "",
   "version": "1.0.0",
   "main": "dist/index.js",
@@ -14,19 +14,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/P2Pflix/libtorrent-node.git"
+    "url": "git+https://github.com/P2PFlix/libtorrent.git"
   },
   "keywords": [],
   "author": "",
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/P2Pflix/libtorrent-node/issues"
+    "url": "https://github.com/P2PFlix/libtorrent/issues"
   },
-  "homepage": "https://github.com/P2Pflix/libtorrent-node#readme",
+  "homepage": "https://github.com/P2PFlix/libtorrent#readme",
   "devDependencies": {
     "@commitlint/cli": "^17.6.3",
     "@commitlint/config-conventional": "^17.6.3",
     "@jest/globals": "^29.5.0",
+    "@types/bindings": "^1.5.1",
     "cmake-js": "^7.2.1",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
@@ -34,5 +35,8 @@
     "node-addon-api": "^6.1.0",
     "typescript": "^5.0.4",
     "xo": "^0.54.2"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0"
   }
 }

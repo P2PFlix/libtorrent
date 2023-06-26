@@ -10,11 +10,11 @@ namespace Libtorrent
         public:
             static Napi::Function Init(Napi::Env env);
             Endpoint(const Napi::CallbackInfo &info);
-            void SetEndpoint(const Napi::CallbackInfo &info, const Napi::Value &value);
 
         private:
             libtorrent::udp::endpoint *endpoint;
             Napi::Value GetEndpoint(const Napi::CallbackInfo &info);
+            void SetEndpoint(const Napi::CallbackInfo &info, const Napi::Value &value);
             Napi::Value Port(const Napi::CallbackInfo &info);
             Napi::Value Address(const Napi::CallbackInfo &info);
         };

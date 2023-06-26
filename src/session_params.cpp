@@ -23,11 +23,16 @@ Libtorrent::SessionParams::SessionParams(const Napi::CallbackInfo &info) : Napi:
 Napi::Function Libtorrent::SessionParams::Init(Napi::Env env)
 {
     return DefineClass(env, "SessionParams", {
-                                                 InstanceAccessor<&SessionParams::GetSessionParams>("sessionParams"),
+                                                 InstanceAccessor<&SessionParams::GetSessionParams, &SessionParams::SetSessionParams>("sessionParams"),
                                              });
 }
 Napi::Value Libtorrent::SessionParams::GetSessionParams(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     return Napi::External<libtorrent::session_params>::New(env, this->session_params);
+}
+void Libtorrent::SessionParams::SetSessionParams(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    libtorrent::session_params *session_params = value.As<Napi::External<libtorrent::session_params>>().Data();
+    this->session_params = session_params;
 }

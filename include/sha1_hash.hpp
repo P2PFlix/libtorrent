@@ -12,6 +12,7 @@ namespace Libtorrent
     private:
         libtorrent::sha1_hash *sha1_hash;
         Napi::Value GetSha1Hash(const Napi::CallbackInfo &info);
+        void SetSha1Hash(const Napi::CallbackInfo &info, const Napi::Value &value);
         Napi::Value Assign(const Napi::CallbackInfo &info);
     };
 }

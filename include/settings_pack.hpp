@@ -12,6 +12,7 @@ namespace Libtorrent
     private:
         libtorrent::settings_pack *settings_pack;
         Napi::Value GetSettingsPack(const Napi::CallbackInfo &info);
+        void SetSettingsPack(const Napi::CallbackInfo &info, const Napi::Value &value);
         Napi::Value GetUserAgent(const Napi::CallbackInfo &info);
         Napi::Value GetAnnounceIp(const Napi::CallbackInfo &info);
         Napi::Value GetHandshakeClientVersion(const Napi::CallbackInfo &info);

@@ -2,6 +2,7 @@ import type {Buffer} from 'node:buffer';
 import bindings from 'bindings';
 
 declare class SettingsPack {
+	settingsPack: unknown;
 	userAgent: number;
 	announceIp: number;
 	handshakeClientVersion: number;
@@ -245,7 +246,6 @@ declare class SettingsPack {
 	httpPw: number;
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	connectSeedEveryNDownload: number;
-	settingsPack: unknown;
 	constructor(settingsPack?: SettingsPack);
 	setStr(name: number, value: string): void;
 	setInt(name: number, value: number): void;
@@ -261,7 +261,9 @@ declare class SessionParameters {
 	constructor(settingsPack?: SessionParameters | SettingsPack);
 }
 declare class Session {
+	session: never;
 	constructor(sessionParameters?: SessionParameters);
+	popAlerts(alerts: Alert[]): void;
 	isValid(): boolean;
 	dhtSampleInfohashes(endpoint: Endpoint, sha1Hash: Sha1Hash): void;
 }
@@ -276,6 +278,10 @@ declare class Sha1Hash {
 	constructor(sha1Hash?: Sha1Hash);
 	assign(hex: Buffer): void;
 }
+declare class Alert {
+	alert: never;
+	constructor();
+}
 type Udp = {
 	Endpoint: typeof Endpoint;
 };
@@ -284,6 +290,7 @@ type Libtorrent = {
 	SessionParams: typeof SessionParameters;
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
+	Alert: typeof Alert;
 	udp: Udp;
 	version(): string;
 	makeAddress(address: string): unknown;

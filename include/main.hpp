@@ -5,6 +5,7 @@
 #include "session_params.hpp"
 #include "session.hpp"
 #include "sha1_hash.hpp"
+#include "alert.hpp"
 #include "udp/main.hpp"
 namespace Libtorrent
 {

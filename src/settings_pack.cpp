@@ -15,7 +15,7 @@ Libtorrent::SettingsPack::SettingsPack(const Napi::CallbackInfo &info) : Napi::O
 Napi::Function Libtorrent::SettingsPack::Init(Napi::Env env)
 {
     return DefineClass(env, "SettingsPack", {
-                                                InstanceAccessor<&SettingsPack::GetSettingsPack>("settingsPack"),
+                                                InstanceAccessor<&SettingsPack::GetSettingsPack, &SettingsPack::SetSettingsPack>("settingsPack"),
                                                 InstanceAccessor<&SettingsPack::GetUserAgent>("userAgent"),
                                                 InstanceAccessor<&SettingsPack::GetAnnounceIp>("announceIp"),
                                                 InstanceAccessor<&SettingsPack::GetHandshakeClientVersion>("handshakeClientVersion"),
@@ -272,6 +272,11 @@ Napi::Value Libtorrent::SettingsPack::GetSettingsPack(const Napi::CallbackInfo &
 {
     Napi::Env env = info.Env();
     return Napi::External<libtorrent::settings_pack>::New(env, this->settings_pack);
+}
+void Libtorrent::SettingsPack::SetSettingsPack(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    libtorrent::settings_pack *settings_pack = value.As<Napi::External<libtorrent::settings_pack>>().Data();
+    this->settings_pack = settings_pack;
 }
 Napi::Value Libtorrent::SettingsPack::GetUserAgent(const Napi::CallbackInfo &info)
 {

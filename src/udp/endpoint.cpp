@@ -15,7 +15,7 @@ Libtorrent::Udp::Endpoint::Endpoint(const Napi::CallbackInfo &info) : Napi::Obje
 Napi::Function Libtorrent::Udp::Endpoint::Init(Napi::Env env)
 {
     return DefineClass(env, "Endpoint", {
-                                            InstanceAccessor<&Endpoint::GetEndpoint>("endpoint"),
+                                            InstanceAccessor<&Endpoint::GetEndpoint, &Endpoint::SetEndpoint>("endpoint"),
                                             InstanceMethod<&Endpoint::Port>("port"),
                                             InstanceMethod<&Endpoint::Address>("address"),
                                         });
@@ -24,6 +24,11 @@ Napi::Value Libtorrent::Udp::Endpoint::GetEndpoint(const Napi::CallbackInfo &inf
 {
     Napi::Env env = info.Env();
     return Napi::External<libtorrent::udp::endpoint>::New(env, this->endpoint);
+}
+void Libtorrent::Udp::Endpoint::SetEndpoint(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    libtorrent::udp::endpoint *endpoint = value.As<Napi::External<libtorrent::udp::endpoint>>().Data();
+    this->endpoint = endpoint;
 }
 Napi::Value Libtorrent::Udp::Endpoint::Port(const Napi::CallbackInfo &info)
 {

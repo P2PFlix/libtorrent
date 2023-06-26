@@ -1,6 +1,5 @@
 #pragma once
-#include "napi.h"
-#include "libtorrent/libtorrent.hpp"
+#include "alert.hpp"
 namespace Libtorrent
 {
     class Session : public Napi::ObjectWrap<Session>
@@ -11,7 +10,10 @@ namespace Libtorrent
 
     private:
         libtorrent::session *session;
+        Napi::Value GetSession(const Napi::CallbackInfo &info);
+        void SetSession(const Napi::CallbackInfo &info, const Napi::Value &value);
         Napi::Value IsValid(const Napi::CallbackInfo &info);
         Napi::Value DhtSampleInfohashes(const Napi::CallbackInfo &info);
+        Napi::Value PopAlerts(const Napi::CallbackInfo &info);
     };
 }

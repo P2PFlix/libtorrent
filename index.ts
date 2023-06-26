@@ -262,7 +262,7 @@ declare class SessionParameters {
 }
 declare class Session {
 	session: never;
-	constructor(sessionParameters?: SessionParameters);
+	constructor(sessionParameters?: SessionParameters | SettingsPack);
 	popAlerts(alerts: Alert[]): void;
 	isValid(): boolean;
 	postDhtStats(): void;

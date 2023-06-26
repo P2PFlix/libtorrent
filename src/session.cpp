@@ -8,8 +8,16 @@ Libtorrent::Session::Session(const Napi::CallbackInfo &info) : Napi::ObjectWrap<
     else
     {
         Napi::Object session_params_arg = info[0].As<Napi::Object>();
-        libtorrent::session_params *session_params = session_params_arg.Get("sessionParams").As<Napi::External<libtorrent::session_params>>().Data();
-        this->session = new libtorrent::session(*session_params);
+        if (session_params_arg.Has("settingsPack"))
+        {
+            libtorrent::settings_pack *settings_pack = session_params_arg.Get("settingsPack").As<Napi::External<libtorrent::settings_pack>>().Data();
+            this->session = new libtorrent::session(*settings_pack);
+        }
+        else
+        {
+            libtorrent::session_params *session_params = session_params_arg.Get("sessionParams").As<Napi::External<libtorrent::session_params>>().Data();
+            this->session = new libtorrent::session(*session_params);
+        }
     }
 }
 Napi::Function Libtorrent::Session::Init(Napi::Env env)

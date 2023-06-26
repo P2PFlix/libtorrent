@@ -265,6 +265,9 @@ declare class Session {
 	constructor(sessionParameters?: SessionParameters);
 	popAlerts(alerts: Alert[]): void;
 	isValid(): boolean;
+	postDhtStats(): void;
+	postSessionStats(): void;
+	postTorrentUpdates(): void;
 	dhtSampleInfohashes(endpoint: Endpoint, sha1Hash: Sha1Hash): void;
 }
 declare class Endpoint {

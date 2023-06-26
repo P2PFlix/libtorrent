@@ -17,6 +17,9 @@ Napi::Function Libtorrent::Session::Init(Napi::Env env)
     return DefineClass(env, "Session", {
                                            InstanceAccessor<&Session::GetSession, &Session::SetSession>("session"),
                                            InstanceMethod<&Session::IsValid>("isValid"),
+                                           InstanceMethod<&Session::PostDhtStats>("postDhtStats"),
+                                           InstanceMethod<&Session::PostSessionStats>("postSessionStats"),
+                                           InstanceMethod<&Session::PostTorrentUpdates>("postTorrentUpdates"),
                                            InstanceMethod<&Session::DhtSampleInfohashes>("dhtSampleInfohashes"),
                                            InstanceMethod<&Session::PopAlerts>("popAlerts"),
                                        });
@@ -35,6 +38,24 @@ Napi::Value Libtorrent::Session::IsValid(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
     return Napi::Boolean::New(env, this->session->is_valid());
+}
+Napi::Value Libtorrent::Session::PostDhtStats(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    this->session->post_dht_stats();
+    return env.Null();
+}
+Napi::Value Libtorrent::Session::PostSessionStats(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    this->session->post_session_stats();
+    return env.Null();
+}
+Napi::Value Libtorrent::Session::PostTorrentUpdates(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    this->session->post_torrent_updates();
+    return env.Null();
 }
 Napi::Value Libtorrent::Session::DhtSampleInfohashes(const Napi::CallbackInfo &info)
 {

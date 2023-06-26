@@ -300,4 +300,17 @@ type Libtorrent = {
 	makeAddress(address: string): unknown;
 };
 const libtorrent = bindings('libtorrent.node') as Libtorrent;
+// //
+// const session = new libtorrent.Session();
+// setInterval(() => {
+// 	const alerts: Alert[] = [];
+// 	session.popAlerts(alerts);
+// 	while (alerts.length > 0) {
+// 		console.log(alerts.pop()!.type());
+// 	}
+// });
+// session.postDhtStats();
+// session.postSessionStats();
+// session.postTorrentUpdates();
+// //
 export default libtorrent;

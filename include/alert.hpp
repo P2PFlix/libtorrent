@@ -13,5 +13,6 @@ namespace Libtorrent
         libtorrent::alert *alert;
         Napi::Value GetAlert(const Napi::CallbackInfo &info);
         void SetAlert(const Napi::CallbackInfo &info, const Napi::Value &value);
+        Napi::Value Type(const Napi::CallbackInfo &info);
     };
 }

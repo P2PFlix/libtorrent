@@ -281,6 +281,7 @@ declare class Sha1Hash {
 declare class Alert {
 	alert: never;
 	constructor();
+	type(): number;
 }
 type Udp = {
 	Endpoint: typeof Endpoint;

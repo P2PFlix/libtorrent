@@ -285,6 +285,8 @@ declare class Alert {
 	alert: never;
 	constructor();
 	type(): number;
+	what(): string;
+	message(): string;
 }
 type Udp = {
 	Endpoint: typeof Endpoint;
@@ -306,11 +308,16 @@ const libtorrent = bindings('libtorrent.node') as Libtorrent;
 // 	const alerts: Alert[] = [];
 // 	session.popAlerts(alerts);
 // 	while (alerts.length > 0) {
-// 		console.log(alerts.pop()!.type());
+// 		const alert = alerts.pop()!;
+// 		console.log(alert.type());
+// 		console.log(alert.message());
+// 		console.log(alert.what());
 // 	}
 // });
-// session.postDhtStats();
-// session.postSessionStats();
-// session.postTorrentUpdates();
+// setInterval(() => {
+// 	session.postDhtStats();
+// 	session.postSessionStats();
+// 	session.postTorrentUpdates();
+// });
 // //
 export default libtorrent;

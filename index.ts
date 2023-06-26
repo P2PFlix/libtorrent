@@ -264,6 +264,7 @@ declare class Session {
 	session: never;
 	constructor(sessionParameters?: SessionParameters | SettingsPack);
 	popAlerts(alerts: Alert[]): void;
+	sessionState(): SessionParameters;
 	isValid(): boolean;
 	postDhtStats(): void;
 	postSessionStats(): void;

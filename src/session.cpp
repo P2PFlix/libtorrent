@@ -30,6 +30,7 @@ Napi::Function Libtorrent::Session::Init(Napi::Env env)
                                            InstanceMethod<&Session::PostTorrentUpdates>("postTorrentUpdates"),
                                            InstanceMethod<&Session::DhtSampleInfohashes>("dhtSampleInfohashes"),
                                            InstanceMethod<&Session::PopAlerts>("popAlerts"),
+                                           InstanceMethod<&Session::SessionState>("sessionState"),
                                        });
 }
 Napi::Value Libtorrent::Session::GetSession(const Napi::CallbackInfo &info)
@@ -88,4 +89,12 @@ Napi::Value Libtorrent::Session::PopAlerts(const Napi::CallbackInfo &info)
         alerts_arg.Set(alerts_arg.Length(), alert_arg);
     }
     return env.Null();
+}
+Napi::Value Libtorrent::Session::SessionState(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    libtorrent::session_params session_params = this->session->session_state();
+    Napi::Object session_params_arg = SessionParams::Init(env).New({});
+    session_params_arg.Set("sessionParams", Napi::External<libtorrent::session_params>::New(env, &session_params));
+    return session_params_arg;
 }

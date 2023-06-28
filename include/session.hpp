@@ -1,6 +1,6 @@
 #pragma once
-#include "alert.hpp"
-#include "session_params.hpp"
+#include "napi.h"
+#include "libtorrent/libtorrent.hpp"
 namespace Libtorrent
 {
     class Session : public Napi::ObjectWrap<Session>

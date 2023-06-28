@@ -1,4 +1,4 @@
-#include "settings_pack.hpp"
+#include "main.hpp"
 Libtorrent::SettingsPack::SettingsPack(const Napi::CallbackInfo &info) : Napi::ObjectWrap<SettingsPack>(info)
 {
     if (info.Length() < 1)

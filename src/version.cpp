@@ -1,4 +1,4 @@
-#include "version.hpp"
+#include "main.hpp"
 Napi::String Libtorrent::Version(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();

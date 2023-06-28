@@ -1,4 +1,4 @@
-#include "session_params.hpp"
+#include "main.hpp"
 Libtorrent::SessionParams::SessionParams(const Napi::CallbackInfo &info) : Napi::ObjectWrap<SessionParams>(info)
 {
     if (info.Length() < 1)

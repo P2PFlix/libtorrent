@@ -1,4 +1,4 @@
-#include "alert.hpp"
+#include "main.hpp"
 Libtorrent::Alert::Alert(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Alert>(info)
 {
     this->alert = nullptr;

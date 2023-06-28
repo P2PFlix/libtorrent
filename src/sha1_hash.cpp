@@ -1,4 +1,4 @@
-#include "sha1_hash.hpp"
+#include "main.hpp"
 Libtorrent::Sha1Hash::Sha1Hash(const Napi::CallbackInfo &info) : Napi::ObjectWrap<Sha1Hash>(info)
 {
     if (info.Length() < 1)

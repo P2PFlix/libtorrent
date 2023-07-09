@@ -13,5 +13,6 @@ namespace Libtorrent
         libtorrent::session_params *session_params;
         Napi::Value GetSessionParams(const Napi::CallbackInfo &info);
         void SetSessionParams(const Napi::CallbackInfo &info, const Napi::Value &value);
+        Napi::Value GetDhtState(const Napi::CallbackInfo &info);
     };
 }

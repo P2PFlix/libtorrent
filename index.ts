@@ -2,7 +2,7 @@ import type {Buffer} from 'node:buffer';
 import bindings from 'bindings';
 
 declare class SettingsPack {
-	settingsPack: unknown;
+	settingsPack: never;
 	userAgent: number;
 	announceIp: number;
 	handshakeClientVersion: number;
@@ -257,7 +257,8 @@ declare class SettingsPack {
 	clear(name?: number): boolean;
 }
 declare class SessionParameters {
-	sessionParams: unknown;
+	sessionParams: never;
+	dhtState: DhtState;
 	constructor(settingsPack?: SessionParameters | SettingsPack);
 }
 declare class Session {
@@ -272,13 +273,18 @@ declare class Session {
 	dhtSampleInfohashes(endpoint: Endpoint, sha1Hash: Sha1Hash): void;
 }
 declare class Endpoint {
-	endpoint: unknown;
+	endpoint: never;
 	constructor(endpoint?: Endpoint);
 	port(port: number): void;
 	address(address: unknown): void;
 }
+declare class DhtState {
+	dhtState: never;
+	nodes: Endpoint[];
+	constructor(dhtState?: DhtState);
+}
 declare class Sha1Hash {
-	sha1Hash: unknown;
+	sha1Hash: never;
 	constructor(sha1Hash?: Sha1Hash);
 	assign(hex: Buffer): void;
 }
@@ -292,6 +298,9 @@ declare class Alert {
 type Udp = {
 	Endpoint: typeof Endpoint;
 };
+type Dht = {
+	DhtState: typeof DhtState;
+};
 type Libtorrent = {
 	SettingsPack: typeof SettingsPack;
 	SessionParams: typeof SessionParameters;
@@ -299,6 +308,7 @@ type Libtorrent = {
 	Sha1Hash: typeof Sha1Hash;
 	Alert: typeof Alert;
 	udp: Udp;
+	dht: Dht;
 	version(): string;
 	makeAddress(address: string): unknown;
 };

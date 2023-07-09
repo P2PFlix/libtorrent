@@ -95,6 +95,6 @@ Napi::Value Libtorrent::Session::SessionState(const Napi::CallbackInfo &info)
     Napi::Env env = info.Env();
     libtorrent::session_params session_params = this->session->session_state();
     Napi::Object session_params_arg = SessionParams::Init(env).New({});
-    session_params_arg.Set("sessionParams", Napi::External<libtorrent::session_params>::New(env, &session_params));
+    session_params_arg.Set("sessionParams", Napi::External<libtorrent::session_params>::New(env, new libtorrent::session_params(session_params)));
     return session_params_arg;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "udp/main.hpp"
+#include "dht/main.hpp"
 #include "alert.hpp"
 #include "make_address.hpp"
 #include "session_params.hpp"

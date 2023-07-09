@@ -40,7 +40,7 @@ Napi::Value Libtorrent::Udp::Endpoint::Port(const Napi::CallbackInfo &info)
 Napi::Value Libtorrent::Udp::Endpoint::Address(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
-    boost::asio::ip::address *address = info[0].As<Napi::External<boost::asio::ip::address>>().Data();
+    libtorrent::address *address = info[0].As<Napi::External<libtorrent::address>>().Data();
     this->endpoint->address(*address);
     return env.Null();
 }

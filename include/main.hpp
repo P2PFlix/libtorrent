@@ -2,6 +2,7 @@
 #include "udp/main.hpp"
 #include "dht/main.hpp"
 #include "alert.hpp"
+#include "address.hpp"
 #include "make_address.hpp"
 #include "session_params.hpp"
 #include "session.hpp"

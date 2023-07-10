@@ -7,6 +7,7 @@ Napi::Object Libtorrent::Init(Napi::Env env, Napi::Object exports)
     exports.Set("SessionParams", SessionParams::Init(env));
     exports.Set("Session", Session::Init(env));
     exports.Set("Alert", Alert::Init(env));
+    exports.Set("Address", Address::Init(env));
     exports.Set("Sha1Hash", Sha1Hash::Init(env));
     exports.Set("udp", Udp::Init(env));
     exports.Set("dht", Dht::Init(env));

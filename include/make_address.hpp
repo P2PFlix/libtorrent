@@ -3,5 +3,5 @@
 #include "libtorrent/libtorrent.hpp"
 namespace Libtorrent
 {
-    Napi::External<libtorrent::address> MakeAddress(const Napi::CallbackInfo &info);
+    Napi::Object MakeAddress(const Napi::CallbackInfo &info);
 }

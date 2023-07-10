@@ -276,12 +276,16 @@ declare class Endpoint {
 	endpoint: never;
 	constructor(endpoint?: Endpoint);
 	port(port: number): void;
-	address(address: unknown): void;
+	address(address: Address): void;
 }
 declare class DhtState {
 	dhtState: never;
 	nodes: Endpoint[];
 	constructor(dhtState?: DhtState);
+}
+declare class Address {
+	address: never;
+	constructor(address?: Address);
 }
 declare class Sha1Hash {
 	sha1Hash: never;
@@ -307,10 +311,11 @@ type Libtorrent = {
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
 	Alert: typeof Alert;
+	Address: typeof Address;
 	udp: Udp;
 	dht: Dht;
 	version(): string;
-	makeAddress(address: string): unknown;
+	makeAddress(address: string): Address;
 };
 const libtorrent = bindings('libtorrent.node') as Libtorrent;
 // //

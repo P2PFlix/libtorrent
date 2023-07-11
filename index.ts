@@ -1,5 +1,5 @@
-import type {Buffer} from 'node:buffer';
-import bindings from 'bindings';
+import {type Buffer} from 'node:buffer';
+import {createRequire} from 'node:module';
 
 declare class SettingsPack {
 	settingsPack: never;
@@ -323,7 +323,8 @@ type Libtorrent = {
 	version(): string;
 	makeAddress(address: string): Address;
 };
-const libtorrent = bindings('libtorrent.node') as Libtorrent;
+const require = createRequire(import.meta.url);
+const libtorrent = require('../build/Release/libtorrent.node') as Libtorrent;
 // //
 // const crypto = await import('node:crypto');
 // const session = new libtorrent.Session();
@@ -331,9 +332,14 @@ const libtorrent = bindings('libtorrent.node') as Libtorrent;
 // 	const alerts: Alert[] = [];
 // 	session.popAlerts(alerts);
 // 	for (const alert of alerts) {
-// 		const dhtSampleInfohashesAlert = new libtorrent.DhtSampleInfohashesAlert();
-// 		dhtSampleInfohashesAlert.dhtSampleInfohashesAlert = alert.alert;
-// 		console.log(dhtSampleInfohashesAlert.samples());
+// 		const type = alert.what();
+// 		if (type === 'dht_sample_infohashes') {
+// 			const dhtSampleInfohashesAlert = new libtorrent.DhtSampleInfohashesAlert();
+// 			dhtSampleInfohashesAlert.dhtSampleInfohashesAlert = alert.alert;
+// 			console.log(dhtSampleInfohashesAlert.samples());
+// 		} else {
+// 			console.log(alert.message());
+// 		}
 // 	}
 // });
 // setInterval(() => {

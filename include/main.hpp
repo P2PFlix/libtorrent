@@ -3,6 +3,7 @@
 #include "dht/main.hpp"
 #include "alert.hpp"
 #include "address.hpp"
+#include "dht_sample_infohashes_alert.hpp"
 #include "make_address.hpp"
 #include "session_params.hpp"
 #include "session.hpp"

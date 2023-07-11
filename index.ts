@@ -287,6 +287,10 @@ declare class Address {
 	address: never;
 	constructor(address?: Address);
 }
+declare class DhtSampleInfohashesAlert {
+	dhtSampleInfohashesAlert: never;
+	constructor();
+}
 declare class Sha1Hash {
 	sha1Hash: never;
 	constructor(sha1Hash?: Sha1Hash);
@@ -311,6 +315,7 @@ type Libtorrent = {
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
 	Alert: typeof Alert;
+	DhtSampleInfohashesAlert: typeof DhtSampleInfohashesAlert;
 	Address: typeof Address;
 	udp: Udp;
 	dht: Dht;
@@ -318,27 +323,4 @@ type Libtorrent = {
 	makeAddress(address: string): Address;
 };
 const libtorrent = bindings('libtorrent.node') as Libtorrent;
-// //
-// const crypto = await import('node:crypto');
-// const seen: Endpoint[] = [];
-// const session = new libtorrent.Session();
-// setInterval(() => {
-// 	const alerts: Alert[] = [];
-// 	session.popAlerts(alerts);
-// 	while (alerts.length > 0) {
-// 		const alert = alerts.pop()!;
-// 		console.log(alert.message());
-// 	}
-// });
-// setInterval(() => {
-// 	for (const node of session.sessionState().dhtState.nodes) {
-// 		if (!seen.includes(node)) {
-// 			const sha = new libtorrent.Sha1Hash();
-// 			sha.assign(crypto.randomBytes(20));
-// 			session.dhtSampleInfohashes(node, sha);
-// 			seen.push(node);
-// 		}
-// 	}
-// });
-// //
 export default libtorrent;

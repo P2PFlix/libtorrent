@@ -10,7 +10,7 @@
     "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prepare": "husky install && npm run build",
     "lint": "xo --fix",
-    "build": "cmake-js compile --parallel $(node -p \"require('node:os').cpus().length\") && tsc"
+    "build": "cmake-js --parallel $(node -p \"require('node:os').cpus().length\") && tsc"
   },
   "repository": {
     "type": "git",

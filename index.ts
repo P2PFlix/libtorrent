@@ -330,8 +330,7 @@ const libtorrent = bindings('libtorrent.node') as Libtorrent;
 // setInterval(() => {
 // 	const alerts: Alert[] = [];
 // 	session.popAlerts(alerts);
-// 	while (alerts.length > 0) {
-// 		const alert = alerts.pop()!;
+// 	for (const alert of alerts) {
 // 		const dhtSampleInfohashesAlert = new libtorrent.DhtSampleInfohashesAlert();
 // 		dhtSampleInfohashesAlert.dhtSampleInfohashesAlert = alert.alert;
 // 		console.log(dhtSampleInfohashesAlert.samples());

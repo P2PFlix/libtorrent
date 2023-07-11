@@ -18,9 +18,9 @@ We also need the following -
 - A recent version of [Cmake](https://cmake.org/)
 - A compatible C++ compiler (g++ or clang)
 
-> Note: MACOS - 
+> Note: MACOS builds will fail with clang++. See [this](https://github.com/arvidn/libtorrent/issues/7455) issue
 
-> Windows Visual Studio will be supported soon
+> Windows Visual Studio and ARM will be supported soon
 ## Documentation
 
 - Check out the wiki pages for this repo

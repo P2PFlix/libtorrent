@@ -290,6 +290,7 @@ declare class Address {
 declare class DhtSampleInfohashesAlert {
 	dhtSampleInfohashesAlert: never;
 	constructor();
+	samples(): Sha1Hash[];
 }
 declare class Sha1Hash {
 	sha1Hash: never;

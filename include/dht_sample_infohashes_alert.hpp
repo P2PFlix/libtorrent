@@ -13,5 +13,6 @@ namespace Libtorrent
             libtorrent::dht_sample_infohashes_alert *dht_sample_infohashes_alert;
             Napi::Value GetDhtSampleInfohashesAlert(const Napi::CallbackInfo &info);
             void SetDhtSampleInfohashesAlert(const Napi::CallbackInfo &info, const Napi::Value &value);
+            Napi::Value Samples(const Napi::CallbackInfo &info);
         };
 }

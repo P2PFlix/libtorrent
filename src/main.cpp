@@ -12,6 +12,7 @@ Napi::Object Libtorrent::Init(Napi::Env env, Napi::Object exports)
     exports.Set("Address", Address::Init(env));
     exports.Set("Sha1Hash", Sha1Hash::Init(env));
     exports.Set("TorrentHandle", TorrentHandle::Init(env));
+    exports.Set("TorrentInfo", TorrentInfo::Init(env));
     exports.Set("udp", Udp::Init(env));
     exports.Set("dht", Dht::Init(env));
     return exports;

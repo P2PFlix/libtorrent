@@ -306,6 +306,10 @@ declare class TorrentHandle {
 	torrentHandle: never;
 	constructor(torrentHandle?: Sha1Hash);
 }
+declare class TorrentInfo {
+	torrentInfo: never;
+	constructor(torrentInfo?: Sha1Hash);
+}
 declare class Alert {
 	alert: never;
 	constructor();
@@ -325,6 +329,7 @@ type Libtorrent = {
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
 	TorrentHandle: typeof TorrentHandle;
+	TorrentInfo: typeof TorrentInfo;
 	Alert: typeof Alert;
 	DhtSampleInfohashesAlert: typeof DhtSampleInfohashesAlert;
 	MetadataReceivedAlert: typeof MetadataReceivedAlert;

@@ -11,6 +11,7 @@
 #include "settings_pack.hpp"
 #include "sha1_hash.hpp"
 #include "torrent_handle.hpp"
+#include "create_torrent.hpp"
 #include "torrent_info.hpp"
 #include "version.hpp"
 namespace Libtorrent

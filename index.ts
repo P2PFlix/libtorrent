@@ -304,12 +304,16 @@ declare class Sha1Hash {
 }
 declare class TorrentHandle {
 	torrentHandle: never;
-	constructor(torrentHandle?: Sha1Hash);
+	constructor(torrentHandle?: TorrentHandle);
 	torrentFile(): TorrentInfo;
+}
+declare class CreateTorrent {
+	createTorrent: never;
+	constructor(createTorrent?: CreateTorrent);
 }
 declare class TorrentInfo {
 	torrentInfo: never;
-	constructor(torrentInfo?: Sha1Hash);
+	constructor(torrentInfo?: TorrentInfo);
 }
 declare class Alert {
 	alert: never;
@@ -330,6 +334,7 @@ type Libtorrent = {
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
 	TorrentHandle: typeof TorrentHandle;
+	CreateTorrent: typeof CreateTorrent;
 	TorrentInfo: typeof TorrentInfo;
 	Alert: typeof Alert;
 	DhtSampleInfohashesAlert: typeof DhtSampleInfohashesAlert;

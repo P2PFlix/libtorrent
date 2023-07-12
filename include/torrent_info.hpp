@@ -13,5 +13,6 @@ namespace Libtorrent
         libtorrent::torrent_info *torrent_info;
         Napi::Value GetTorrentInfo(const Napi::CallbackInfo &info);
         void SetTorrentInfo(const Napi::CallbackInfo &info, const Napi::Value &value);
+        Napi::Value InfoSection(const Napi::CallbackInfo &info);
     };
 }

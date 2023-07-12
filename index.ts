@@ -309,6 +309,10 @@ declare class TorrentHandle {
 declare class TorrentInfo {
 	torrentInfo: never;
 	constructor(torrentInfo?: Sha1Hash);
+	infoSection(): {
+		data: string;
+		size: number;
+	};
 }
 declare class Alert {
 	alert: never;

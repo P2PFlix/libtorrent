@@ -32,7 +32,7 @@ void Libtorrent::Sha1Hash::SetSha1Hash(const Napi::CallbackInfo &info, const Nap
 Napi::Value Libtorrent::Sha1Hash::Assign(const Napi::CallbackInfo &info)
 {
     Napi::Env env = info.Env();
-    char *hex = info[0].As<Napi::Buffer<char>>().Data();
-    this->sha1_hash->assign(hex);
+    Napi::Buffer hex = info[0].As<Napi::Buffer<char>>();
+    this->sha1_hash->assign(hex.Data());
     return env.Null();
 }

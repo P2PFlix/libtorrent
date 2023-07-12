@@ -294,6 +294,7 @@ declare class DhtSampleInfohashesAlert {
 }
 declare class MetadataReceivedAlert {
 	metadataReceivedAlert: never;
+	handle: TorrentHandle;
 	constructor();
 }
 declare class Sha1Hash {

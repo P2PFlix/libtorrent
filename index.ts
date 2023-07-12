@@ -305,6 +305,7 @@ declare class Sha1Hash {
 declare class TorrentHandle {
 	torrentHandle: never;
 	constructor(torrentHandle?: Sha1Hash);
+	torrentFile(): TorrentInfo;
 }
 declare class TorrentInfo {
 	torrentInfo: never;

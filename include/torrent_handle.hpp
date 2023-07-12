@@ -13,5 +13,6 @@ namespace Libtorrent
         libtorrent::torrent_handle *torrent_handle;
         Napi::Value GetTorrentHandle(const Napi::CallbackInfo &info);
         void SetTorrentHandle(const Napi::CallbackInfo &info, const Napi::Value &value);
+        Napi::Value TorrentFile(const Napi::CallbackInfo &info);
     };
 }

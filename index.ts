@@ -292,10 +292,18 @@ declare class DhtSampleInfohashesAlert {
 	constructor();
 	samples(): Sha1Hash[];
 }
+declare class MetadataReceivedAlert {
+	metadataReceivedAlert: never;
+	constructor();
+}
 declare class Sha1Hash {
 	sha1Hash: never;
 	constructor(sha1Hash?: Sha1Hash);
 	assign(hex: Buffer): void;
+}
+declare class TorrentHandle {
+	torrentHandle: never;
+	constructor(torrentHandle?: Sha1Hash);
 }
 declare class Alert {
 	alert: never;
@@ -315,8 +323,10 @@ type Libtorrent = {
 	SessionParams: typeof SessionParameters;
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
+	TorrentHandle: typeof TorrentHandle;
 	Alert: typeof Alert;
 	DhtSampleInfohashesAlert: typeof DhtSampleInfohashesAlert;
+	MetadataReceivedAlert: typeof MetadataReceivedAlert;
 	Address: typeof Address;
 	udp: Udp;
 	dht: Dht;

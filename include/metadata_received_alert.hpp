@@ -14,5 +14,6 @@ namespace Libtorrent
             Napi::Value GetMetadataReceivedAlert(const Napi::CallbackInfo &info);
             void SetMetadataReceivedAlert(const Napi::CallbackInfo &info, const Napi::Value &value);
             Napi::Value GetHandle(const Napi::CallbackInfo &info);
+            void SetHandle(const Napi::CallbackInfo &info, const Napi::Value &value);
         };
 }

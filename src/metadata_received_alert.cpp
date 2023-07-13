@@ -7,7 +7,7 @@ Napi::Function Libtorrent::MetadataReceivedAlert::Init(Napi::Env env)
 {
     return DefineClass(env, "MetadataReceivedAlert", {
                                             InstanceAccessor<&MetadataReceivedAlert::GetMetadataReceivedAlert, &MetadataReceivedAlert::SetMetadataReceivedAlert>("metadataReceivedAlert"),
-                                            InstanceAccessor<&MetadataReceivedAlert::GetHandle>("handle"),
+                                            InstanceAccessor<&MetadataReceivedAlert::GetHandle, &MetadataReceivedAlert::SetHandle>("handle"),
                                         });
 }
 Napi::Value Libtorrent::MetadataReceivedAlert::GetMetadataReceivedAlert(const Napi::CallbackInfo &info)
@@ -27,4 +27,10 @@ Napi::Value Libtorrent::MetadataReceivedAlert::GetHandle(const Napi::CallbackInf
     Napi::Object torrent_handle_arg = TorrentHandle::Init(env).New({});
     torrent_handle_arg.Set("torrentHandle", Napi::External<libtorrent::torrent_handle>::New(env, new libtorrent::torrent_handle(torrent_handle)));
     return torrent_handle_arg;
+}
+void Libtorrent::MetadataReceivedAlert::SetHandle(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    Napi::Object torrent_handle_arg = value.As<Napi::Object>();
+    libtorrent::torrent_handle *torrent_handle = torrent_handle_arg.Get("torrentHandle").As<Napi::External<libtorrent::torrent_handle>>().Data();
+    this->metadata_received_alert->handle = *torrent_handle;
 }

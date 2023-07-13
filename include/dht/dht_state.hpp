@@ -16,6 +16,7 @@ namespace Libtorrent
             Napi::Value GetDhtState(const Napi::CallbackInfo &info);
             void SetDhtState(const Napi::CallbackInfo &info, const Napi::Value &value);
             Napi::Value GetNodes(const Napi::CallbackInfo &info);
+            void SetNodes(const Napi::CallbackInfo &info, const Napi::Value &value);
         };
     }
 }

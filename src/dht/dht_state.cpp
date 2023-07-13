@@ -16,7 +16,7 @@ Napi::Function Libtorrent::Dht::DhtState::Init(Napi::Env env)
 {
     return DefineClass(env, "DhtState", {
                                             InstanceAccessor<&DhtState::GetDhtState, &DhtState::SetDhtState>("dhtState"),
-                                            InstanceAccessor<&DhtState::GetNodes>("nodes"),
+                                            InstanceAccessor<&DhtState::GetNodes, &DhtState::SetNodes>("nodes"),
                                         });
 }
 Napi::Value Libtorrent::Dht::DhtState::GetDhtState(const Napi::CallbackInfo &info)
@@ -40,4 +40,17 @@ Napi::Value Libtorrent::Dht::DhtState::GetNodes(const Napi::CallbackInfo &info)
         nodes_arg.Set(nodes_arg.Length(), node_arg);
     }
     return nodes_arg;
+}
+void Libtorrent::Dht::DhtState::SetNodes(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    Napi::Array nodes_arg = value.As<Napi::Array>();
+    std::vector<libtorrent::udp::endpoint> nodes = std::vector<libtorrent::udp::endpoint>();
+    for (int i = 0; i < nodes_arg.Length(); i+=1)
+    {
+        libtorrent::udp::endpoint *node = nodes_arg.Get(i)
+            .As<Napi::Object>().Get("endpoint")
+            .As<Napi::External<libtorrent::udp::endpoint>>().Data();
+        nodes.push_back(*node);
+    }
+    this->dht_state->nodes = nodes;
 }

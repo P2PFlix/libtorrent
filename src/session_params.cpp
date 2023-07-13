@@ -24,7 +24,7 @@ Napi::Function Libtorrent::SessionParams::Init(Napi::Env env)
 {
     return DefineClass(env, "SessionParams", {
                                                  InstanceAccessor<&SessionParams::GetSessionParams, &SessionParams::SetSessionParams>("sessionParams"),
-                                                 InstanceAccessor<&SessionParams::GetDhtState>("dhtState"),
+                                                 InstanceAccessor<&SessionParams::GetDhtState, &SessionParams::SetDhtState>("dhtState"),
                                              });
 }
 Napi::Value Libtorrent::SessionParams::GetSessionParams(const Napi::CallbackInfo &info)
@@ -44,4 +44,10 @@ Napi::Value Libtorrent::SessionParams::GetDhtState(const Napi::CallbackInfo &inf
     Napi::Object dht_state_arg = Dht::DhtState::Init(env).New({});
     dht_state_arg.Set("dhtState", Napi::External<libtorrent::dht::dht_state>::New(env, new libtorrent::dht::dht_state(dht_state)));
     return dht_state_arg;
+}
+void Libtorrent::SessionParams::SetDhtState(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    Napi::Object dht_state_arg = value.As<Napi::Object>();
+    libtorrent::dht::dht_state *dht_state = dht_state_arg.Get("dhtState").As<Napi::External<libtorrent::dht::dht_state>>().Data();
+    this->session_params->dht_state = *dht_state;
 }

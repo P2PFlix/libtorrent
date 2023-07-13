@@ -319,6 +319,11 @@ declare class CreateTorrent {
 	createTorrent: never;
 	constructor(createTorrent?: CreateTorrent);
 }
+declare class TorrentFlagsT {
+	torrentFlagsT: never;
+	constructor(torrentFlagsT?: TorrentFlagsT);
+	operatorPipeEqual(torrentFlagsT: TorrentFlagsT): TorrentFlagsT;
+}
 declare class TorrentInfo {
 	torrentInfo: never;
 	constructor(torrentInfo?: TorrentInfo);
@@ -350,6 +355,7 @@ type Libtorrent = {
 	Address: typeof Address;
 	InfoHashT: typeof InfoHashT;
 	AddTorrentParams: typeof AddTorrentParameters;
+	TorrentFlagsT: typeof TorrentFlagsT;
 	udp: Udp;
 	dht: Dht;
 	version(): string;

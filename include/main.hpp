@@ -11,6 +11,7 @@
 #include "settings_pack.hpp"
 #include "sha1_hash.hpp"
 #include "info_hash_t.hpp"
+#include "torrent_flags_t.hpp"
 #include "add_torrent_params.hpp"
 #include "torrent_handle.hpp"
 #include "create_torrent.hpp"

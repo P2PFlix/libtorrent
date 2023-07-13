@@ -15,9 +15,9 @@ Libtorrent::TorrentHandle::TorrentHandle(const Napi::CallbackInfo &info) : Napi:
 Napi::Function Libtorrent::TorrentHandle::Init(Napi::Env env)
 {
     return DefineClass(env, "TorrentHandle", {
-                                            InstanceAccessor<&TorrentHandle::GetTorrentHandle, &TorrentHandle::SetTorrentHandle>("torrentHandle"),
-                                            InstanceMethod<&TorrentHandle::TorrentFile>("torrentFile"),
-                                        });
+                                                 InstanceAccessor<&TorrentHandle::GetTorrentHandle, &TorrentHandle::SetTorrentHandle>("torrentHandle"),
+                                                 InstanceMethod<&TorrentHandle::TorrentFile>("torrentFile"),
+                                             });
 }
 Napi::Value Libtorrent::TorrentHandle::GetTorrentHandle(const Napi::CallbackInfo &info)
 {

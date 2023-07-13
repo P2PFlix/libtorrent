@@ -15,8 +15,8 @@ Libtorrent::CreateTorrent::CreateTorrent(const Napi::CallbackInfo &info) : Napi:
 Napi::Function Libtorrent::CreateTorrent::Init(Napi::Env env)
 {
     return DefineClass(env, "CreateTorrent", {
-                                            InstanceAccessor<&CreateTorrent::GetCreateTorrent, &CreateTorrent::SetCreateTorrent>("createTorrent"),
-                                        });
+                                                 InstanceAccessor<&CreateTorrent::GetCreateTorrent, &CreateTorrent::SetCreateTorrent>("createTorrent"),
+                                             });
 }
 Napi::Value Libtorrent::CreateTorrent::GetCreateTorrent(const Napi::CallbackInfo &info)
 {

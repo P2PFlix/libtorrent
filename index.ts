@@ -302,6 +302,14 @@ declare class Sha1Hash {
 	constructor(sha1Hash?: Sha1Hash);
 	assign(hex: Buffer): void;
 }
+declare class AddTorrentParameters {
+	addTorrentParams: never;
+	constructor(addTorrentParameters?: AddTorrentParameters);
+}
+declare class InfoHashT {
+	infoHashT: never;
+	constructor(infoHashT?: InfoHashT | Sha1Hash);
+}
 declare class TorrentHandle {
 	torrentHandle: never;
 	constructor(torrentHandle?: TorrentHandle);
@@ -340,6 +348,8 @@ type Libtorrent = {
 	DhtSampleInfohashesAlert: typeof DhtSampleInfohashesAlert;
 	MetadataReceivedAlert: typeof MetadataReceivedAlert;
 	Address: typeof Address;
+	InfoHashT: typeof InfoHashT;
+	AddTorrentParams: typeof AddTorrentParameters;
 	udp: Udp;
 	dht: Dht;
 	version(): string;

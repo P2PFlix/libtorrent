@@ -6,9 +6,9 @@ Libtorrent::MetadataReceivedAlert::MetadataReceivedAlert(const Napi::CallbackInf
 Napi::Function Libtorrent::MetadataReceivedAlert::Init(Napi::Env env)
 {
     return DefineClass(env, "MetadataReceivedAlert", {
-                                            InstanceAccessor<&MetadataReceivedAlert::GetMetadataReceivedAlert, &MetadataReceivedAlert::SetMetadataReceivedAlert>("metadataReceivedAlert"),
-                                            InstanceAccessor<&MetadataReceivedAlert::GetHandle, &MetadataReceivedAlert::SetHandle>("handle"),
-                                        });
+                                                         InstanceAccessor<&MetadataReceivedAlert::GetMetadataReceivedAlert, &MetadataReceivedAlert::SetMetadataReceivedAlert>("metadataReceivedAlert"),
+                                                         InstanceAccessor<&MetadataReceivedAlert::GetHandle, &MetadataReceivedAlert::SetHandle>("handle"),
+                                                     });
 }
 Napi::Value Libtorrent::MetadataReceivedAlert::GetMetadataReceivedAlert(const Napi::CallbackInfo &info)
 {

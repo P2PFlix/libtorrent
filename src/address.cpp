@@ -15,8 +15,8 @@ Libtorrent::Address::Address(const Napi::CallbackInfo &info) : Napi::ObjectWrap<
 Napi::Function Libtorrent::Address::Init(Napi::Env env)
 {
     return DefineClass(env, "Address", {
-                                            InstanceAccessor<&Address::GetAddress, &Address::SetAddress>("address"),
-                                        });
+                                           InstanceAccessor<&Address::GetAddress, &Address::SetAddress>("address"),
+                                       });
 }
 Napi::Value Libtorrent::Address::GetAddress(const Napi::CallbackInfo &info)
 {

@@ -15,8 +15,8 @@ Libtorrent::TorrentInfo::TorrentInfo(const Napi::CallbackInfo &info) : Napi::Obj
 Napi::Function Libtorrent::TorrentInfo::Init(Napi::Env env)
 {
     return DefineClass(env, "TorrentInfo", {
-                                            InstanceAccessor<&TorrentInfo::GetTorrentInfo, &TorrentInfo::SetTorrentInfo>("torrentInfo"),
-                                        });
+                                               InstanceAccessor<&TorrentInfo::GetTorrentInfo, &TorrentInfo::SetTorrentInfo>("torrentInfo"),
+                                           });
 }
 Napi::Value Libtorrent::TorrentInfo::GetTorrentInfo(const Napi::CallbackInfo &info)
 {

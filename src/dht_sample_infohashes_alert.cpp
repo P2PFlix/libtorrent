@@ -6,9 +6,9 @@ Libtorrent::DhtSampleInfohashesAlert::DhtSampleInfohashesAlert(const Napi::Callb
 Napi::Function Libtorrent::DhtSampleInfohashesAlert::Init(Napi::Env env)
 {
     return DefineClass(env, "DhtSampleInfohashesAlert", {
-                                            InstanceAccessor<&DhtSampleInfohashesAlert::GetDhtSampleInfohashesAlert, &DhtSampleInfohashesAlert::SetDhtSampleInfohashesAlert>("dhtSampleInfohashesAlert"),
-                                            InstanceMethod<&DhtSampleInfohashesAlert::Samples>("samples"),
-                                        });
+                                                            InstanceAccessor<&DhtSampleInfohashesAlert::GetDhtSampleInfohashesAlert, &DhtSampleInfohashesAlert::SetDhtSampleInfohashesAlert>("dhtSampleInfohashesAlert"),
+                                                            InstanceMethod<&DhtSampleInfohashesAlert::Samples>("samples"),
+                                                        });
 }
 Napi::Value Libtorrent::DhtSampleInfohashesAlert::GetDhtSampleInfohashesAlert(const Napi::CallbackInfo &info)
 {
@@ -25,7 +25,8 @@ Napi::Value Libtorrent::DhtSampleInfohashesAlert::Samples(const Napi::CallbackIn
     Napi::Env env = info.Env();
     Napi::Array samples_arg = Napi::Array::New(env);
     std::vector<libtorrent::sha1_hash> samples = this->dht_sample_infohashes_alert->samples();
-    for (libtorrent::sha1_hash sample: samples) {
+    for (libtorrent::sha1_hash sample : samples)
+    {
         Napi::Object sample_arg = Sha1Hash::Init(env).New({});
         sample_arg.Set("sha1Hash", Napi::External<libtorrent::sha1_hash>::New(env, new libtorrent::sha1_hash(sample)));
         samples_arg.Set(samples_arg.Length(), sample_arg);

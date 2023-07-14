@@ -64,7 +64,7 @@ Please adhere to this project's `code of conduct`.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[No Permission](https://choosealicense.com/no-permission/)
 
 
 ## Roadmap

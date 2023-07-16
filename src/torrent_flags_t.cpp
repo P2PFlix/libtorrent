@@ -16,7 +16,7 @@ Napi::Function Libtorrent::TorrentFlagsT::Init(Napi::Env env)
 {
     return DefineClass(env, "TorrentFlagsT", {
                                             InstanceAccessor<&TorrentFlagsT::GetTorrentFlagsT, &TorrentFlagsT::SetTorrentFlagsT>("torrentFlagsT"),
-                                            InstanceMethod<&TorrentFlagsT::OperatorPipeEqual>("operatorPipeEqual"),
+                                            InstanceMethod<&TorrentFlagsT::OperatorPipeEqual>("operator|="),
                                         });
 }
 Napi::Value Libtorrent::TorrentFlagsT::GetTorrentFlagsT(const Napi::CallbackInfo &info)

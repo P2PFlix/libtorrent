@@ -323,7 +323,8 @@ declare class CreateTorrent {
 declare class TorrentFlagsT {
 	torrentFlagsT: never;
 	constructor(torrentFlagsT?: TorrentFlagsT);
-	operatorPipeEqual(torrentFlagsT: TorrentFlagsT): TorrentFlagsT;
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	'operator|='(torrentFlagsT: TorrentFlagsT): TorrentFlagsT;
 }
 declare class TorrentInfo {
 	torrentInfo: never;

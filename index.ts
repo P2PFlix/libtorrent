@@ -304,6 +304,7 @@ declare class Sha1Hash {
 }
 declare class AddTorrentParameters {
 	addTorrentParams: never;
+	flags: TorrentFlagsT;
 	constructor(addTorrentParameters?: AddTorrentParameters);
 }
 declare class InfoHashT {
@@ -341,6 +342,10 @@ type Udp = {
 type Dht = {
 	DhtState: typeof DhtState;
 };
+type TorrentFlags = {
+	all: TorrentFlagsT;
+	defaultDontDownload: TorrentFlagsT;
+};
 type Libtorrent = {
 	SettingsPack: typeof SettingsPack;
 	SessionParams: typeof SessionParameters;
@@ -358,6 +363,7 @@ type Libtorrent = {
 	TorrentFlagsT: typeof TorrentFlagsT;
 	udp: Udp;
 	dht: Dht;
+	torrentFlags: TorrentFlags;
 	version(): string;
 	makeAddress(address: string): Address;
 };

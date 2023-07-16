@@ -1,5 +1,6 @@
 #pragma once
 #include "udp/main.hpp"
+#include "torrent_flags/main.hpp"
 #include "dht/main.hpp"
 #include "alert.hpp"
 #include "address.hpp"

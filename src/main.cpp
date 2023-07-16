@@ -19,6 +19,7 @@ Napi::Object Libtorrent::Init(Napi::Env env, Napi::Object exports)
     exports.Set("TorrentInfo", TorrentInfo::Init(env));
     exports.Set("udp", Udp::Init(env));
     exports.Set("dht", Dht::Init(env));
+    exports.Set("torrentFlags", TorrentFlags::Init(env));
     return exports;
 }
 namespace Libtorrent

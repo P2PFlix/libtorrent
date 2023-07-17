@@ -8,6 +8,7 @@ Napi::Function Libtorrent::DhtSampleInfohashesAlert::Init(Napi::Env env)
     return DefineClass(env, "DhtSampleInfohashesAlert", {
                                                             InstanceAccessor<&DhtSampleInfohashesAlert::GetDhtSampleInfohashesAlert, &DhtSampleInfohashesAlert::SetDhtSampleInfohashesAlert>("dhtSampleInfohashesAlert"),
                                                             InstanceMethod<&DhtSampleInfohashesAlert::Samples>("samples"),
+                                                            InstanceMethod<&DhtSampleInfohashesAlert::NumSamples>("numSamples"),
                                                         });
 }
 Napi::Value Libtorrent::DhtSampleInfohashesAlert::GetDhtSampleInfohashesAlert(const Napi::CallbackInfo &info)
@@ -32,4 +33,9 @@ Napi::Value Libtorrent::DhtSampleInfohashesAlert::Samples(const Napi::CallbackIn
         samples_arg.Set(samples_arg.Length(), sample_arg);
     }
     return samples_arg;
+}
+Napi::Value Libtorrent::DhtSampleInfohashesAlert::NumSamples(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    return Napi::Number::New(env, this->dht_sample_infohashes_alert->num_samples());
 }

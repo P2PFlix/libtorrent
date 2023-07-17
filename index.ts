@@ -305,10 +305,12 @@ declare class Sha1Hash {
 declare class AddTorrentParameters {
 	addTorrentParams: never;
 	flags: TorrentFlagsT;
+	infoHashes: InfoHashT;
 	constructor(addTorrentParameters?: AddTorrentParameters);
 }
 declare class InfoHashT {
 	infoHashT: never;
+	v1: Sha1Hash;
 	constructor(infoHashT?: InfoHashT | Sha1Hash);
 }
 declare class TorrentHandle {
@@ -346,6 +348,8 @@ type Dht = {
 type TorrentFlags = {
 	all: TorrentFlagsT;
 	defaultDontDownload: TorrentFlagsT;
+	defaultFlags: TorrentFlagsT;
+	autoManaged: TorrentFlagsT;
 };
 type Libtorrent = {
 	SettingsPack: typeof SettingsPack;

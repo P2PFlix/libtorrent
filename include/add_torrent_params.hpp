@@ -15,5 +15,7 @@ namespace Libtorrent
         void SetAddTorrentParams(const Napi::CallbackInfo &info, const Napi::Value &value);
         Napi::Value GetFlags(const Napi::CallbackInfo &info);
         void SetFlags(const Napi::CallbackInfo &info, const Napi::Value &value);
+        Napi::Value GetInfoHashes(const Napi::CallbackInfo &info);
+        void SetInfoHashes(const Napi::CallbackInfo &info, const Napi::Value &value);
     };
 }

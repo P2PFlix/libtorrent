@@ -13,5 +13,7 @@ namespace Libtorrent
         libtorrent::info_hash_t *info_hash_t;
         Napi::Value GetInfoHashT(const Napi::CallbackInfo &info);
         void SetInfoHashT(const Napi::CallbackInfo &info, const Napi::Value &value);
+        Napi::Value GetV1(const Napi::CallbackInfo &info);
+        void SetV1(const Napi::CallbackInfo &info, const Napi::Value &value);
     };
 }

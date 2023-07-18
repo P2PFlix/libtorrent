@@ -7,16 +7,16 @@ Libtorrent::SessionParams::SessionParams(const Napi::CallbackInfo &info) : Napi:
     }
     else
     {
-        Napi::Object settings_pack_arg = info[0].As<Napi::Object>();
-        if (settings_pack_arg.Has("sessionParams"))
+        Napi::Object session_params_arg = info[0].As<Napi::Object>();
+        if (session_params_arg.Has("settingsPack"))
         {
-            libtorrent::session_params *session_params = settings_pack_arg.Get("sessionParams").As<Napi::External<libtorrent::session_params>>().Data();
-            this->session_params = new libtorrent::session_params(*session_params);
+            libtorrent::settings_pack *settings_pack = session_params_arg.Get("settingsPack").As<Napi::External<libtorrent::settings_pack>>().Data();
+            this->session_params = new libtorrent::session_params(*settings_pack);
         }
         else
         {
-            libtorrent::settings_pack *settings_pack = settings_pack_arg.Get("settingsPack").As<Napi::External<libtorrent::settings_pack>>().Data();
-            this->session_params = new libtorrent::session_params(*settings_pack);
+            libtorrent::session_params *session_params = session_params_arg.Get("sessionParams").As<Napi::External<libtorrent::session_params>>().Data();
+            this->session_params = new libtorrent::session_params(*session_params);
         }
     }
 }

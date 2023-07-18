@@ -13,6 +13,11 @@ Libtorrent::InfoHashT::InfoHashT(const Napi::CallbackInfo &info) : Napi::ObjectW
             libtorrent::sha1_hash *sha1_hash = info_hash_t_arg.Get("sha1Hash").As<Napi::External<libtorrent::sha1_hash>>().Data();
             this->info_hash_t = new libtorrent::info_hash_t(*sha1_hash);
         }
+        else if (info_hash_t_arg.Has("sha256Hash"))
+        {
+            libtorrent::sha256_hash *sha256_hash = info_hash_t_arg.Get("sha256Hash").As<Napi::External<libtorrent::sha256_hash>>().Data();
+            this->info_hash_t = new libtorrent::info_hash_t(*sha256_hash);
+        }
         else
         {
             libtorrent::info_hash_t *info_hash_t = info_hash_t_arg.Get("infoHashT").As<Napi::External<libtorrent::info_hash_t>>().Data();
@@ -24,7 +29,8 @@ Napi::Function Libtorrent::InfoHashT::Init(Napi::Env env)
 {
     return DefineClass(env, "InfoHashT", {
                                              InstanceAccessor<&InfoHashT::GetInfoHashT, &InfoHashT::SetInfoHashT>("infoHashT"),
-                                                InstanceAccessor<&InfoHashT::GetV1, &InfoHashT::SetV1>("v1"),
+                                             InstanceAccessor<&InfoHashT::GetV1, &InfoHashT::SetV1>("v1"),
+                                             InstanceAccessor<&InfoHashT::GetV2, &InfoHashT::SetV2>("v2"),
                                          });
 }
 Napi::Value Libtorrent::InfoHashT::GetInfoHashT(const Napi::CallbackInfo &info)
@@ -48,4 +54,16 @@ void Libtorrent::InfoHashT::SetV1(const Napi::CallbackInfo &info, const Napi::Va
 {
     libtorrent::sha1_hash *sha1_hash = value.As<Napi::External<libtorrent::sha1_hash>>().Data();
     this->info_hash_t->v1 = *sha1_hash;
+}
+Napi::Value Libtorrent::InfoHashT::GetV2(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    Napi::Object sha256_hash_arg = Sha256Hash::Init(env).New({});
+    sha256_hash_arg.Set("sha256Hash", Napi::External<libtorrent::sha256_hash>::New(env, new libtorrent::sha256_hash(this->info_hash_t->v2)));
+    return sha256_hash_arg;
+}
+void Libtorrent::InfoHashT::SetV2(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    libtorrent::sha256_hash *sha256_hash = value.As<Napi::External<libtorrent::sha256_hash>>().Data();
+    this->info_hash_t->v2 = *sha256_hash;
 }

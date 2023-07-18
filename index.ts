@@ -259,7 +259,12 @@ declare class SettingsPack {
 declare class SessionParameters {
 	sessionParams: never;
 	dhtState: DhtState;
-	constructor(settingsPack?: SessionParameters | SettingsPack);
+	constructor(sessionParameters?: SessionParameters | SettingsPack);
+}
+declare class IovecT {
+	iovecT: never;
+	constructor(iovecT?: IovecT);
+	data(): Buffer;
 }
 declare class Session {
 	session: never;
@@ -275,12 +280,16 @@ declare class Session {
 declare class Endpoint {
 	endpoint: never;
 	constructor(endpoint?: Endpoint);
+	constructor(address: Address, port: number);
 	port(port: number): void;
+	port(): number;
 	address(address: Address): void;
+	address(): Address;
 }
 declare class DhtState {
 	dhtState: never;
 	nodes: Endpoint[];
+	nodes6: Endpoint[];
 	constructor(dhtState?: DhtState);
 }
 declare class Address {
@@ -300,7 +309,12 @@ declare class MetadataReceivedAlert {
 }
 declare class Sha1Hash {
 	sha1Hash: never;
-	constructor(sha1Hash?: Sha1Hash);
+	constructor(sha1Hash?: Sha1Hash | Buffer);
+	assign(hex: Buffer): void;
+}
+declare class Sha256Hash {
+	sha256Hash: never;
+	constructor(sha256Hash?: Sha256Hash | Buffer);
 	assign(hex: Buffer): void;
 }
 declare class AddTorrentParameters {
@@ -312,7 +326,8 @@ declare class AddTorrentParameters {
 declare class InfoHashT {
 	infoHashT: never;
 	v1: Sha1Hash;
-	constructor(infoHashT?: InfoHashT | Sha1Hash);
+	v2: Sha256Hash;
+	constructor(infoHashT?: InfoHashT | Sha1Hash | Sha256Hash);
 }
 declare class TorrentHandle {
 	torrentHandle: never;
@@ -332,6 +347,7 @@ declare class TorrentFlagsT {
 declare class TorrentInfo {
 	torrentInfo: never;
 	constructor(torrentInfo?: TorrentInfo);
+	infoSection(): IovecT;
 }
 declare class Alert {
 	alert: never;
@@ -357,6 +373,7 @@ type Libtorrent = {
 	SessionParams: typeof SessionParameters;
 	Session: typeof Session;
 	Sha1Hash: typeof Sha1Hash;
+	Sha256Hash: typeof Sha256Hash;
 	TorrentHandle: typeof TorrentHandle;
 	CreateTorrent: typeof CreateTorrent;
 	TorrentInfo: typeof TorrentInfo;
@@ -367,6 +384,7 @@ type Libtorrent = {
 	InfoHashT: typeof InfoHashT;
 	AddTorrentParams: typeof AddTorrentParameters;
 	TorrentFlagsT: typeof TorrentFlagsT;
+	IovecT: typeof IovecT;
 	udp: Udp;
 	dht: Dht;
 	torrentFlags: TorrentFlags;
@@ -375,29 +393,5 @@ type Libtorrent = {
 };
 const require = createRequire(import.meta.url);
 const libtorrent = require('../build/Release/libtorrent.node') as Libtorrent;
-// //
-// const crypto = await import('node:crypto');
-// const session = new libtorrent.Session();
-// setInterval(() => {
-// 	const alerts: Alert[] = [];
-// 	session.popAlerts(alerts);
-// 	for (const alert of alerts) {
-// 		const type = alert.what();
-// 		if (type === 'dht_sample_infohashes') {
-// 			const dhtSampleInfohashesAlert = new libtorrent.DhtSampleInfohashesAlert();
-// 			dhtSampleInfohashesAlert.dhtSampleInfohashesAlert = alert.alert;
-// 			console.log(dhtSampleInfohashesAlert.samples());
-// 		} else {
-// 			console.log(alert.message());
-// 		}
-// 	}
-// });
-// setInterval(() => {
-// 	for (const node of session.sessionState().dhtState.nodes) {
-// 		const sha = new libtorrent.Sha1Hash();
-// 		sha.assign(crypto.randomBytes(20));
-// 		session.dhtSampleInfohashes(node, sha);
-// 	}
-// });
-// //
+
 export default libtorrent;

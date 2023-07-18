@@ -11,11 +11,13 @@ Napi::Object Libtorrent::Init(Napi::Env env, Napi::Object exports)
     exports.Set("MetadataReceivedAlert", MetadataReceivedAlert::Init(env));
     exports.Set("Address", Address::Init(env));
     exports.Set("Sha1Hash", Sha1Hash::Init(env));
+    exports.Set("Sha256Hash", Sha256Hash::Init(env));
     exports.Set("AddTorrentParams", AddTorrentParams::Init(env));
     exports.Set("InfoHashT", InfoHashT::Init(env));
     exports.Set("TorrentFlagsT", TorrentFlagsT::Init(env));
     exports.Set("TorrentHandle", TorrentHandle::Init(env));
     exports.Set("CreateTorrent", TorrentHandle::Init(env));
+    exports.Set("IovecT", IovecT::Init(env));
     exports.Set("TorrentInfo", TorrentInfo::Init(env));
     exports.Set("udp", Udp::Init(env));
     exports.Set("dht", Dht::Init(env));

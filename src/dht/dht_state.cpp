@@ -17,6 +17,7 @@ Napi::Function Libtorrent::Dht::DhtState::Init(Napi::Env env)
     return DefineClass(env, "DhtState", {
                                             InstanceAccessor<&DhtState::GetDhtState, &DhtState::SetDhtState>("dhtState"),
                                             InstanceAccessor<&DhtState::GetNodes, &DhtState::SetNodes>("nodes"),
+                                            InstanceAccessor<&DhtState::GetNodes6, &DhtState::SetNodes6>("nodes6"),
                                         });
 }
 Napi::Value Libtorrent::Dht::DhtState::GetDhtState(const Napi::CallbackInfo &info)
@@ -56,4 +57,32 @@ void Libtorrent::Dht::DhtState::SetNodes(const Napi::CallbackInfo &info, const N
         nodes.push_back(*node);
     }
     this->dht_state->nodes = nodes;
+}
+Napi::Value Libtorrent::Dht::DhtState::GetNodes6(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    Napi::Array nodes6_arg = Napi::Array::New(env);
+    std::vector<libtorrent::udp::endpoint> nodes6 = this->dht_state->nodes6;
+    for (libtorrent::udp::endpoint node6 : nodes6)
+    {
+        Napi::Object node6_arg = Udp::Endpoint::Init(env).New({});
+        node6_arg.Set("endpoint", Napi::External<libtorrent::udp::endpoint>::New(env, new libtorrent::udp::endpoint(node6)));
+        nodes6_arg.Set(nodes6_arg.Length(), node6_arg);
+    }
+    return nodes6_arg;
+}
+void Libtorrent::Dht::DhtState::SetNodes6(const Napi::CallbackInfo &info, const Napi::Value &value)
+{
+    Napi::Array nodes6_arg = value.As<Napi::Array>();
+    std::vector<libtorrent::udp::endpoint> nodes6 = std::vector<libtorrent::udp::endpoint>();
+    for (int i = 0; i < nodes6_arg.Length(); i += 1)
+    {
+        libtorrent::udp::endpoint *node6 = nodes6_arg.Get(i)
+                                               .As<Napi::Object>()
+                                               .Get("endpoint")
+                                               .As<Napi::External<libtorrent::udp::endpoint>>()
+                                               .Data();
+        nodes6.push_back(*node6);
+    }
+    this->dht_state->nodes6 = nodes6;
 }

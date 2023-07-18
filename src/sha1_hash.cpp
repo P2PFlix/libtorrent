@@ -7,9 +7,17 @@ Libtorrent::Sha1Hash::Sha1Hash(const Napi::CallbackInfo &info) : Napi::ObjectWra
     }
     else
     {
-        Napi::Object sha1_hash_arg = info[0].As<Napi::Object>();
-        libtorrent::sha1_hash *sha1_hash = sha1_hash_arg.Get("sha1Hash").As<Napi::External<libtorrent::sha1_hash>>().Data();
-        this->sha1_hash = new libtorrent::sha1_hash(*sha1_hash);
+        if (info[0].IsBuffer())
+        {
+            Napi::Buffer hex = info[0].As<Napi::Buffer<char>>();
+            this->sha1_hash = new libtorrent::sha1_hash(hex.Data());
+        }
+        else
+        {
+            Napi::Object sha1_hash_arg = info[0].As<Napi::Object>();
+            libtorrent::sha1_hash *sha1_hash = sha1_hash_arg.Get("sha1Hash").As<Napi::External<libtorrent::sha1_hash>>().Data();
+            this->sha1_hash = new libtorrent::sha1_hash(*sha1_hash);
+        }
     }
 }
 Napi::Function Libtorrent::Sha1Hash::Init(Napi::Env env)

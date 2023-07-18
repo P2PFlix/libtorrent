@@ -20,5 +20,7 @@ namespace Libtorrent
         Napi::Value DhtSampleInfohashes(const Napi::CallbackInfo &info);
         Napi::Value PopAlerts(const Napi::CallbackInfo &info);
         Napi::Value SessionState(const Napi::CallbackInfo &info);
+        Napi::Value AddTorrent(const Napi::CallbackInfo &info);
+        Napi::Value AsyncAddTorrent(const Napi::CallbackInfo &info);
     };
 }

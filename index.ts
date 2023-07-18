@@ -276,6 +276,8 @@ declare class Session {
 	postSessionStats(): void;
 	postTorrentUpdates(): void;
 	dhtSampleInfohashes(endpoint: Endpoint, sha1Hash: Sha1Hash): void;
+	addTorrent(parameters: AddTorrentParameters): TorrentHandle;
+	asyncAddTorrent(parameters: AddTorrentParameters): void;
 }
 declare class Endpoint {
 	endpoint: never;

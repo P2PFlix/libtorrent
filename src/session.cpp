@@ -31,6 +31,8 @@ Napi::Function Libtorrent::Session::Init(Napi::Env env)
                                            InstanceMethod<&Session::DhtSampleInfohashes>("dhtSampleInfohashes"),
                                            InstanceMethod<&Session::PopAlerts>("popAlerts"),
                                            InstanceMethod<&Session::SessionState>("sessionState"),
+                                           InstanceMethod<&Session::AddTorrent>("addTorrent"),
+                                           InstanceMethod<&Session::AsyncAddTorrent>("asyncAddTorrent"),
                                        });
 }
 Napi::Value Libtorrent::Session::GetSession(const Napi::CallbackInfo &info)
@@ -97,4 +99,22 @@ Napi::Value Libtorrent::Session::SessionState(const Napi::CallbackInfo &info)
     Napi::Object session_params_arg = SessionParams::Init(env).New({});
     session_params_arg.Set("sessionParams", Napi::External<libtorrent::session_params>::New(env, new libtorrent::session_params(session_params)));
     return session_params_arg;
+}
+Napi::Value Libtorrent::Session::AddTorrent(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    Napi::Object add_torrent_params_arg = info[0].As<Napi::Object>();
+    libtorrent::add_torrent_params *add_torrent_params = add_torrent_params_arg.Get("addTorrentParams").As<Napi::External<libtorrent::add_torrent_params>>().Data();
+    libtorrent::torrent_handle torrent_handle = this->session->add_torrent(*add_torrent_params);
+    Napi::Object torrent_handle_arg = TorrentHandle::Init(env).New({});
+    torrent_handle_arg.Set("torrentHandle", Napi::External<libtorrent::torrent_handle>::New(env, new libtorrent::torrent_handle(torrent_handle)));
+    return torrent_handle_arg;
+}
+Napi::Value Libtorrent::Session::AsyncAddTorrent(const Napi::CallbackInfo &info)
+{
+    Napi::Env env = info.Env();
+    Napi::Object add_torrent_params_arg = info[0].As<Napi::Object>();
+    libtorrent::add_torrent_params *add_torrent_params = add_torrent_params_arg.Get("addTorrentParams").As<Napi::External<libtorrent::add_torrent_params>>().Data();
+    this->session->async_add_torrent(*add_torrent_params);
+    return env.Null();
 }

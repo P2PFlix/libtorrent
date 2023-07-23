@@ -254,7 +254,7 @@ declare class SettingsPack {
 	getInt(name: number): number;
 	getBool(name: number): boolean;
 	hasVal(name: number): boolean;
-	clear(name?: number): boolean;
+	clear(name?: number): void;
 }
 declare class SessionParameters {
 	sessionParams: never;

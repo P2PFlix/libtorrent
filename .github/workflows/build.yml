@@ -1,0 +1,69 @@
+name: build
+'on':
+  push: {}
+  pull_request: {}
+jobs:
+  Windows:
+    runs-on: windows-2019
+    env:
+      VS_PATH: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\'
+      MSBUILD_PATH: >-
+        C:\Program Files (x86)\Microsoft Visual
+        Studio\2019\Enterprise\MSBuild\Current\Bin\
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also emits such aliases as lts, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: '18.x'
+      - uses: actions/checkout@v1
+        with:
+          fetch-dept: 1
+      - name: install dependencies
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 30
+          retry_wait_seconds: 4
+          max_attempts: 3
+          command: choco install boost-msvc-14.1
+      - name: Build libtorrent
+        shell: cmd
+        run: |
+          npm i && npm run build:windows
+  Linux:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also emits such aliases as lts, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node 
+          node-version: '18.x'
+      - uses: actions/checkout@v1
+        with:
+          fetch-dept: 1
+      - name: Install dependencies
+        shell: cmd
+        run: |
+          sudo apt update && sudo apt-get install -y libboost-all-dev
+      - name: Build libtorrent
+        shell: cmd
+        run: |
+          npm i && npm run build
+  MacOS:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/setup-node@v3
+      with:
+        # Version Spec of the version to use in SemVer notation.
+        # It also emits such aliases as lts, latest, nightly and canary builds
+        # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+        node-version: '18.x'
+    - uses: actions/checkout@v1
+    - name: Install Dependencies
+      run: |
+        brew update && brew install boost
+    - name: Build Project
+      run: |
+        npm i && npm run build

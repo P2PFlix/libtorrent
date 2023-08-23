@@ -6,9 +6,7 @@ set(webtorrent ON)
 project(libtorrent)
 
 include(FetchContent)
-message("Fetching external lib")
-message(${CMAKE_SOURCE_DIR}/lib/openssl)
-
+message("Fetching external libs...")
 
 FetchContent_Declare(
     openssl

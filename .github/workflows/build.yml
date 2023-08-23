@@ -28,7 +28,7 @@ jobs:
           max_attempts: 3
           command: choco install boost-msvc-14.1
       - name: Build libtorrent
-        shell: cmd
+        shell: pwsh
         run: |
           npm i && npm run build:windows
   Linux:
@@ -44,11 +44,9 @@ jobs:
         with:
           fetch-dept: 1
       - name: Install dependencies
-        shell: cmd
         run: |
           sudo apt update && sudo apt-get install -y libboost-all-dev
       - name: Build libtorrent
-        shell: cmd
         run: |
           npm i && npm run build
   MacOS:

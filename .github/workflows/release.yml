@@ -60,6 +60,15 @@ jobs:
       - name: Build libtorrent
         run: |
           npm i && npm run build
+      - name: create zip archive
+        run: |
+          zip -r release-linux-amd64.zip "$(pwd)/build/Release"
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "./release-linux-amd64.zip"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # MacOS:
   #   runs-on: macOS-latest
   #   steps:

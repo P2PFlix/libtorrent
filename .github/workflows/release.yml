@@ -35,7 +35,7 @@ jobs:
       - name: create zip archive
         shell: pwsh
         run: |
-          Compress-Archive -Path "$(pwd)/build/Release" -DestinationPath "./libtorrent_windows.zip"
+          Compress-Archive -Path "$(pwd)\build\Release" -DestinationPath ".\libtorrent_windows.zip"
       - name: Release
         uses: softprops/action-gh-release@v1
         with:

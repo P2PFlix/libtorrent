@@ -3,6 +3,8 @@ on:
   push:
     tags:
       - 'v*.*.*'
+    tags-ignore:
+      - '**'
 jobs:
   Windows:
     runs-on: windows-2019
@@ -32,10 +34,14 @@ jobs:
         shell: pwsh
         run: |
           npm i && npm run build:windows
+      - name: print directory structure
+        shell: pwsh
+        run: |
+          dir
       - name: create zip archive
         shell: pwsh
         run: |
-          Compress-Archive -Path "$(pwd)\build\Release" -DestinationPath ".\libtorrent_windows.zip"
+          Compress-Archive -Path ".\build\Release" -DestinationPath ".\libtorrent_windows.zip"
       - name: Release
         uses: softprops/action-gh-release@v1
         with:

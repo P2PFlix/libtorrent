@@ -22,13 +22,21 @@ jobs:
       - uses: actions/checkout@v1
         with:
           fetch-dept: 1
-      - name: install dependencies
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 30
-          retry_wait_seconds: 4
-          max_attempts: 3
-          command: choco install boost-msvc-14.1
+      - name: install boost
+        run: |
+          git clone --depth=1 --recurse-submodules -j10 --branch=boost-1.78.0 https://github.com/boostorg/boost.git
+          cd boost
+          bootstrap.bat
+      - name: Boost headers
+        run: |
+          cd boost
+          .\b2 headers
+      - name: Build libtorrent
+        shell: pwsh
+        run: |
+          set BOOST_ROOT=%CD%\boost
+          set PATH=%BOOST_ROOT%;%PATH%
+          npm i && npm run build:windows
       - name: Build libtorrent
         shell: pwsh
         run: |

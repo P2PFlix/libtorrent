@@ -32,13 +32,13 @@ jobs:
           cd boost
           .\b2 headers
       - name: Build libtorrent
-        shell: pwsh
+        shell: cmd
         run: |
           set BOOST_ROOT=%CD%\boost
           set PATH=%BOOST_ROOT%;%PATH%
           npm i && npm run build:windows
       - name: Build libtorrent
-        shell: pwsh
+        shell: cmd
         run: |
           npm i && npm run build:windows
   Linux:

@@ -31,7 +31,7 @@ jobs:
         run: |
           cd boost
           .\b2 headers
-      - name: Build libtorrent
+      - name: Set Environment Variables
         shell: cmd
         run: |
           set BOOST_ROOT=%CD%\boost
@@ -59,19 +59,19 @@ jobs:
       - name: Build libtorrent
         run: |
           npm i && npm run build
-  MacOS:
-    runs-on: macOS-latest
-    steps:
-    - uses: actions/setup-node@v3
-      with:
-        # Version Spec of the version to use in SemVer notation.
-        # It also emits such aliases as lts, latest, nightly and canary builds
-        # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
-        node-version: '18.x'
-    - uses: actions/checkout@v1
-    - name: Install Dependencies
-      run: |
-        brew update && brew install boost
-    - name: Build Project
-      run: |
-        npm i && npm run build
+  # MacOS:
+  #   runs-on: macOS-latest
+  #   steps:
+  #   - uses: actions/setup-node@v3
+  #     with:
+  #       # Version Spec of the version to use in SemVer notation.
+  #       # It also emits such aliases as lts, latest, nightly and canary builds
+  #       # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+  #       node-version: '18.x'
+  #   - uses: actions/checkout@v1
+  #   - name: Install Dependencies
+  #     run: |
+  #       brew update && brew install boost
+  #   - name: Build Project
+  #     run: |
+  #       npm i && npm run build

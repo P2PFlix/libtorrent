@@ -25,7 +25,7 @@ jobs:
         run: |
           git clone --depth=1 --recurse-submodules -j10 --branch=boost-1.78.0 https://github.com/boostorg/boost.git
           cd boost
-          /\bootstrap.bat
+          .\bootstrap.bat
       - name: Boost headers
         run: |
           cd boost

@@ -8,9 +8,10 @@
   "type": "module",
   "scripts": {
     "test": "npm run build && node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "prepare": "husky install && npm run build",
+    "prepare": "husky install",
     "lint": "xo --fix",
-    "build": "cmake-js compile --parallel $(node -p \"require('node:os').cpus().length\") && tsc"
+    "build": "cmake-js compile --parallel $(node -p \"JSON.stringify(require('node:os').cpus().length)\") && tsc",
+    "build:windows": "powershell -ExecutionPolicy Bypass -File build.windows.ps1"
   },
   "repository": {
     "type": "git",
